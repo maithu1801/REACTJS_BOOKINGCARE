@@ -1,7 +1,7 @@
 {
     "homeheader": {
         "speciality": "Medical specialty",
-        "searchdoctor": "Find a doctor by specialty",
+        "serchdoctor": "Find a doctor by specialty",
         "facility": "Health facilities",
         "select-room": "Choose hospital clinic",
         "doctor": "Doctor",
