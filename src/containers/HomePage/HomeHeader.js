@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import './HomeHeader.scss';
 import logo from '../../assets/logo.png';
 import { FormattedMessage } from 'react-intl';
-import { LANGUAGES } from '../../utils';
 import { changeLanguageApp } from "../../store/actions"
+import { LANGUAGES } from '../../utils';
 
 class HomeHeader extends Component {
 
