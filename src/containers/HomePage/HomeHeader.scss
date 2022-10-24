@@ -3,10 +3,16 @@
     width: 100%;
     padding: 0 40px;
 
+
+
     .home-header-content {
         width: 100%;
-        height: 100%;
+        height: 60px;
         display: flex;
+        position: fixed;
+        top: 0;
+        background-color: white;
+        z-index: 10000;
 
         .left-content {
             width: 20%;
@@ -29,10 +35,11 @@
         }
 
         .center-content {
-            width: 55%;
+            width: 60%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+
 
             .child-content {
                 .sub-title {
@@ -43,10 +50,11 @@
         }
 
         .right-content {
-            width: 25%;
+            width: 15%;
             display: flex;
             justify-content: flex-end;
             align-items: center;
+
 
             .support {
                 padding-right: 50px;
@@ -96,6 +104,7 @@
                 }
             }
         }
+
     }
 
     .home-header-banner {
@@ -201,5 +210,4 @@
             }
         }
     }
-
 }

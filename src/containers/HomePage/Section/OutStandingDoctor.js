@@ -15,7 +15,7 @@ class OutStandingDoctor extends Component {
                         <span className='title-section'>Bác sĩ nổi bật tuần qua</span>
                         <button className='btn-section'>Xem thêm</button>
                     </div>
-                    <div className='setcion-body'>
+                    <div className='section-body'>
                         <Slider {...this.props.settings}>
                             <div className='section-customize'>
                                 <div className='customize-border'>
