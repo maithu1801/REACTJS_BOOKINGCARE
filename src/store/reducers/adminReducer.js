@@ -2,6 +2,7 @@ import { CommonUtils } from '../../utils';
 import actionTypes from '../actions/actionTypes';
 
 const initialState = {
+    isLoadingGender: false,
     gender: [],
     roles: [],
     positions: []
@@ -11,22 +12,44 @@ const initialState = {
 const adminReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.FETCH_GENDER_START:
-            console.log('maithu start', action);
-            return {
-                ...state
-            }
-        case actionTypes.FETCH_GENDER_SUCCESS:
             let copyState = { ...state };
-            copyState.gender = action.data;
-            console.log('maithu success', copyState);
+            copyState.isLoadingGender = true;
             return {
                 ...copyState
             }
-        case actionTypes.FETCH_GENDER_FAIDED:
-            console.log('maithu faile', action);
+        case actionTypes.FETCH_GENDER_SUCCESS:
+            state.genders = action.data;
+            state.isLoadingGender = false;
             return {
                 ...state
             }
+        case actionTypes.FETCH_GENDER_FAIDED:
+            state.isLoadingGender = false;
+            state.gender = [];
+            return {
+                ...state
+            }
+        case actionTypes.FETCH_POSITION_SUCCESS:
+            state.positions = action.data;
+            return {
+                ...state
+            }
+        case actionTypes.FETCH_POSITION_FAIDED:
+            state.positions = [];
+            return {
+                ...state
+            }
+        case actionTypes.FETCH_ROLE_SUCCESS:
+            state.roles = action.data;
+            return {
+                ...state
+            }
+        case actionTypes.FETCH_ROLEFAIDED:
+            state.roles = [];
+            return {
+                ...state
+            }
+
         default:
             return state;
     }
