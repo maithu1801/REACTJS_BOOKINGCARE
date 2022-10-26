@@ -1,11 +1,12 @@
-import { CommonUtils } from '../../utils';
+
 import actionTypes from '../actions/actionTypes';
 
 const initialState = {
     isLoadingGender: false,
     gender: [],
     roles: [],
-    positions: []
+    positions: [],
+    users: []
 
 }
 
@@ -23,7 +24,7 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state
             }
-        case actionTypes.FETCH_GENDER_FAIDED:
+        case actionTypes.FETCH_GENDER_FAILDED:
             state.isLoadingGender = false;
             state.gender = [];
             return {
@@ -34,7 +35,7 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state
             }
-        case actionTypes.FETCH_POSITION_FAIDED:
+        case actionTypes.FETCH_POSITION_FAILDED:
             state.positions = [];
             return {
                 ...state
@@ -44,8 +45,18 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state
             }
-        case actionTypes.FETCH_ROLEFAIDED:
+        case actionTypes.FETCH_ROLE_FAILDED:
             state.roles = [];
+            return {
+                ...state
+            }
+        case actionTypes.FETCH_ALL_USERS_SUCCESS:
+            state.users = action.users;
+            return {
+                ...state
+            }
+        case actionTypes.FETCH_ALL_USERS_FAILDED:
+            state.users = [];
             return {
                 ...state
             }
