@@ -1,7 +1,8 @@
 import actionTypes from "./actionTypes";
 import {
     getAllCodeService, createNewUserService,
-    getAllUsers, deleteUserService
+    getAllUsers, deleteUserService, editUserService,
+    getTopDoctorHomeService,
 } from "../../services/userService";
 import { toast } from "react-toastify";
 
@@ -108,6 +109,7 @@ export const fetchAllUsersStart = () => {
     return async (dispatch, getState) => {
         try {
             let res = await getAllUsers("ALL");
+            let res1 = await getTopDoctorHomeService(3);
             if (res && res.errCode === 0) {
                 dispatch(fetchAllUsersSuccess(res.users.reverse()))
             } else {
@@ -158,3 +160,55 @@ export const deleteUserSuccess = () => ({
 export const deleteUsersFailed = () => ({
     type: actionTypes.DELETE_USER_FAILDED
 })
+
+export const editUser = (data) => {
+    return async (dispatch, getState) => {
+        try {
+            console.log("Data gui di: ", data);
+            let res = await editUserService(data);
+            if (res && res.errCode === 0) {
+                toast.success("Update the user success!");
+                dispatch(editUserSuccess());
+                dispatch(fetchAllUsersStart());
+            } else {
+                toast.error("Update the user error 123! ");
+                dispatch(editUsersFailed());
+            }
+        } catch (e) {
+            toast.error("Update the user error!");
+            dispatch(editUsersFailed());
+            console.log('EditsersFailed error', e)
+        }
+    }
+}
+export const editUserSuccess = () => ({
+    type: actionTypes.EDIT_USER_SUCCESS
+})
+
+export const editUsersFailed = () => ({
+    type: actionTypes.EDIT_USER_FAILDED
+})
+
+export const fetchTopDoctor = () => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await getTopDoctorHomeService('');
+
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.FETCH_TOP_DOCTORS_SUCCESS,
+                    dataDoctors: res.data
+                })
+            } else {
+                dispatch({
+                    type: actionTypes.FETCH_TOP_DOCTORS_FAILDED
+                })
+            }
+        } catch (e) {
+            console.log('FETCH_TOP_DOCTORS_FAILDED: ', e)
+            dispatch({
+                type: actionTypes.FETCH_TOP_DOCTORS_FAILDED
+            })
+        }
+    }
+}

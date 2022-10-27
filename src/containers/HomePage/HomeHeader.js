@@ -15,7 +15,7 @@ class HomeHeader extends Component {
 
     render() {
         let language = this.props.language;
-        console.log('check language:', language);
+
         return (
             <React.Fragment>
                 <div className="home-header-container">
