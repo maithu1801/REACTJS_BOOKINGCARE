@@ -11,9 +11,11 @@ export const adminMenu = [
             {
                 name: 'menu.admin.manage-doctor', link: '/system/manage-doctor'
             },
+
             {
-                name: 'menu.admin.manage-admin', link: '/system/user-admin'
+                name: 'menu.doctor.manage-schedule', link: '/doctor/manage-schedule'
             },
+
         ]
     },
     {//quan ly phong kham
@@ -44,3 +46,14 @@ export const adminMenu = [
 
     },
 ];
+
+export const doctorMenu = [
+    {
+        name: 'menu.admin.manage-user',
+        menus: [
+            {//quan ly ke hoach kham benh cua bac si
+                name: 'menu.doctor.manage-schedule', link: '/doctor/manage-schedule'
+            },
+        ]
+    }
+]

@@ -9,7 +9,6 @@ import './ManageDoctor.scss';
 import Select from 'react-select';
 import { LANGUAGES, CRUD_ACTIONS } from "../../../utils";
 import { getDetailInforDoctor } from "../../../services/userService";
-import { has } from 'lodash';
 
 
 
