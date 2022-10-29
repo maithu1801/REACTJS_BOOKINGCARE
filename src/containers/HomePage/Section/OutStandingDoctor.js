@@ -23,6 +23,9 @@ class OutStandingDoctor extends Component {
     componentDidMount() {
         this.props.loadTopDoctors();
     }
+    handleDeatilDoctor = (doctor) => {
+        console.log('maithu chanel view infor:', doctor);
+    }
 
     render() {
         let arrDoctors = this.state.arrDoctors;
@@ -51,7 +54,7 @@ class OutStandingDoctor extends Component {
                                     let nameVi = `${item.positionData.valueVi}, ${item.lastName} ${item.firstName}`;
                                     let nameEn = `${item.positionData.valueEn}, ${item.firstName} ${item.lastName}`;
                                     return (
-                                        <div className='section-customize' key={index}>
+                                        <div className='section-customize' key={index} onClick={() => this.handleDeatilDoctor(item)}>
                                             <div className='customize-border'>
                                                 <div className='outer-bg'>
                                                     <div className='bg-image section-outstanding-doctor'
