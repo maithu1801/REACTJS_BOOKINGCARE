@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import HomeHeader from '../../HomePage/HomeHeader';
 import './DetailDoctor.scss';
-import { getDatailInforDoctor } from '../../../services/userService';
+import { getDetailInforDoctor } from '../../../services/userService';
 import { LANGUAGES } from '../../../utils';
 
 
@@ -19,7 +19,7 @@ class DetailDoctor extends Component {
     async componentDidMount() {
         if (this.props.match && this.props.match.params && this.props.match.params.id) {
             let id = this.props.match.params.id;
-            let res = await getDatailInforDoctor(id);
+            let res = await getDetailInforDoctor(id);
             if (res && res.errCode === 0) {
                 this.setState({
                     detailDoctor: res.data
@@ -69,13 +69,10 @@ class DetailDoctor extends Component {
                     <div className='schedule-doctor'>
 
                     </div>
-                    <div>
-                        {detailDoctor && detailDoctor.Markdown && detailDoctor.Markdown.connectHTML
+                    <div className='detail-infor-doctor'>
+                        {detailDoctor && detailDoctor.Markdown && detailDoctor.Markdown.contentHTML
                             &&
-                            <div dangerouslySetInnerHTML={{ _html: detailDoctor.Markdown.connectHTML }}>
-
-                            </div>
-
+                            <div dangerouslySetInnerHTML={{ __html: detailDoctor.Markdown.contentHTML }}></div>
                         }
                     </div>
                     <div className='comment-doctor'>
