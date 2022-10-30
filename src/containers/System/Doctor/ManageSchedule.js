@@ -4,11 +4,12 @@ import './ManageSchedule.scss';
 import { FormattedMessage } from "react-intl";
 import Select from 'react-select';
 import * as actions from "../../../store/actions";
-import { LANGUAGES, CRUD_ACTIONS, dateFormat } from "../../../utils";
+import { LANGUAGES } from "../../../utils";
 import DatePicker from '../../../components/Input/DatePicker';
 import { toast } from "react-toastify";
 import _ from "lodash";
-import moment from 'moment';
+import { saveBulkScheduleDoctor } from '../../../services/userService';
+
 
 class ManageSchedule extends Component {
     constructor(props) {
@@ -80,7 +81,7 @@ class ManageSchedule extends Component {
             })
         }
     }
-    handleSaveSchedule = () => {
+    handleSaveSchedule = async () => {
         let { rangeTime, selectedDoctor, currentDate } = this.state;
         let result = [];
 
@@ -92,14 +93,16 @@ class ManageSchedule extends Component {
             toast.error("Invalid selected doctor! ");
             return;
         }
-        let formatedDate = moment(currentDate).format(dateFormat.SEND_TO_SERVER);
+        // let formatedDate = moment(currentDate).format(dateFormat.SEND_TO_SERVER);
+        let formatedDate = new Date(currentDate).getTime();
+
         if (rangeTime && rangeTime.length > 0) {
             let selectedTime = rangeTime.filter(item => item.isSelected === true);
             if (selectedTime && selectedTime.length > 0) {
                 selectedTime.map((schedule, index) => {
                     let object = {};
                     object.doctorId = selectedDoctor.value;
-                    object.time = schedule.keyMap;
+                    object.timeType = schedule.keyMap;
                     result.push(object);
                 })
             } else {
@@ -107,6 +110,12 @@ class ManageSchedule extends Component {
                 return;
             }
         }
+        let res = await saveBulkScheduleDoctor({
+            arrSchedule: result,
+            doctorId: selectedDoctor.value,
+            formatedDate: formatedDate
+        })
+        console.log('maithu check res saveBulkScheduleDoctor: ', res)
         console.log('maithu check result:', result)
     }
 
