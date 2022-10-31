@@ -4,11 +4,12 @@ import './ManageSchedule.scss';
 import { FormattedMessage } from "react-intl";
 import Select from 'react-select';
 import * as actions from "../../../store/actions";
-import { LANGUAGES } from "../../../utils";
+import { LANGUAGES, dateFormat } from "../../../utils";
 import DatePicker from '../../../components/Input/DatePicker';
 import { toast } from "react-toastify";
 import _ from "lodash";
 import { saveBulkScheduleDoctor } from '../../../services/userService';
+
 
 
 class ManageSchedule extends Component {
@@ -103,7 +104,9 @@ class ManageSchedule extends Component {
                     let object = {};
                     object.doctorId = selectedDoctor.value;
                     object.timeType = schedule.keyMap;
+                    object.date = formatedDate;
                     result.push(object);
+
                 })
             } else {
                 toast.error("Invalid select time! ");
@@ -115,8 +118,7 @@ class ManageSchedule extends Component {
             doctorId: selectedDoctor.value,
             formatedDate: formatedDate
         })
-        console.log('maithu check res saveBulkScheduleDoctor: ', res)
-        console.log('maithu check result:', result)
+        console.log('maithu check result:', res)
     }
 
 
@@ -140,14 +142,14 @@ class ManageSchedule extends Component {
                         </div>
                         <div className="col-6 from-group">
                             <label><FormattedMessage id="manage-schedule.choose-date" /></label>
-                            <div>
-                                <DatePicker
-                                    onChange={this.handleOnChangeDatePicker}
-                                    className="from-control"
-                                    value={this.state.currentDate}
-                                    minDate={new Date()}
-                                />
-                            </div>
+
+                            <DatePicker
+                                onChange={this.handleOnChangeDatePicker}
+                                className="from-control"
+                                value={this.state.currentDate}
+                                minDate={new Date()}
+                            />
+
                         </div>
                         <div className="col-12 pick-hour-container">
                             {rangeTime && rangeTime.length > 0 &&
