@@ -9,6 +9,7 @@ import DatePicker from '../../../components/Input/DatePicker';
 import { toast } from "react-toastify";
 import _ from "lodash";
 import { saveBulkScheduleDoctor } from '../../../services/userService';
+import moment from "moment";
 
 
 
@@ -19,7 +20,8 @@ class ManageSchedule extends Component {
             listDoctors: [],
             selectedDortor: {},
             currentDate: '',
-            rangeTime: []
+            rangeTime: [],
+
         }
     }
 
@@ -118,13 +120,20 @@ class ManageSchedule extends Component {
             doctorId: selectedDoctor.value,
             formatedDate: formatedDate
         })
-        console.log('maithu check result:', res)
+        if (res && res.errCode === 0) {
+            toast.success("Save Infor succed!");
+        } else {
+            toast.error("error saveBulkScheduleDoctor");
+            console.log('error saveBulkScheduleDoctor >>> res: ', res);
+        }
     }
 
 
     render() {
         let { rangeTime } = this.state;
         let { language } = this.props;
+        let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
+
         return (
             <div className='manage-schedule-container'>
                 <div className='m-s-title'>
@@ -147,7 +156,7 @@ class ManageSchedule extends Component {
                                 onChange={this.handleOnChangeDatePicker}
                                 className="from-control"
                                 value={this.state.currentDate}
-                                minDate={new Date()}
+                                minDate={yesterday}
                             />
 
                         </div>
