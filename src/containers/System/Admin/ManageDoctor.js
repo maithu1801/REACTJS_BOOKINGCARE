@@ -65,7 +65,7 @@ class ManageDoctor extends Component {
                     let labelVi = `${item.valueVi} `;
                     let labelEn = `${item.valueEn} USD`;
                     object.label = language === LANGUAGES.VI ? labelVi : labelEn;
-                    object.value = item.id;
+                    object.value = item.keyMap;
                     result.push(object)
                 })
             }
@@ -75,7 +75,7 @@ class ManageDoctor extends Component {
                     let labelVi = `${item.valueVi}`;
                     let labelEn = `${item.valueEn}`;
                     object.label = language === LANGUAGES.VI ? labelVi : labelEn;
-                    object.value = item.id;
+                    object.value = item.keyMap;
                     result.push(object)
                 })
             }
