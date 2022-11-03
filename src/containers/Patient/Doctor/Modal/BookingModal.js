@@ -50,6 +50,8 @@ class BookingModal extends Component {
                         <div className='doctor-infor'>
                             <ProfileDoctor
                                 doctorId={doctorId}
+                                isShowDesciptionDoctor={false}
+                                dataTime={dataTime}
                             />
                         </div>
                         <div className='price'>
