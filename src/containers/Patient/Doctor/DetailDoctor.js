@@ -37,7 +37,7 @@ class DetailDoctor extends Component {
 
     }
     render() {
-        console.log('maithu check state: ', this.state)
+
         let { language } = this.props;
         let { detailDoctor } = this.state;
         let nameVi = '', nameEn = '';
