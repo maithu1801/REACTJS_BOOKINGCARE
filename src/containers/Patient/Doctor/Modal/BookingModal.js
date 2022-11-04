@@ -111,7 +111,7 @@ class BookingModal extends Component {
             toast.success('Booking a new appointment success!')
             this.props.closeBookingClose();
         } else {
-            toast.error('Booking a new appointment error xxxxx!')
+            toast.error('Booking a new appointment error!')
         }
     }
 
