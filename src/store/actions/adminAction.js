@@ -166,6 +166,7 @@ export const editUser = (data) => {
         try {
             console.log("Data gui di: ", data);
             let res = await editUserService(data);
+            console.log("Data gui di res: ", res);
             if (res && res.errCode === 0) {
                 toast.success("Update the user success!");
                 dispatch(editUserSuccess());

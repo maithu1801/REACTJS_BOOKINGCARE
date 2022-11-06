@@ -104,7 +104,7 @@ class ManageDoctor extends Component {
             })
         }
 
-        if (prevProps.language !== this.props.language) {
+        if (this.props.language !== prevProps.language) {
             let dataSelect = this.buildDataInputSelect(this.props.allDoctors, 'USERS')
             let { resPayment, resPrice, resProvince } = this.props.allRequiredDoctorInfor;
             let dataSelectPrice = this.buildDataInputSelect(resPrice, 'PRICE');
