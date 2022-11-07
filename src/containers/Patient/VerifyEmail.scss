@@ -1,0 +1,36 @@
+.verify-email-container {
+    width: 100%;
+    height: 100%;
+    padding-top: 200px;
+    border: 1px solid red;
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    align-items: center;
+
+    .infor-booking-sucess {
+        text-align: center;
+        text-transform: uppercase;
+        color: blue;
+        background-color: rgba(250, 210, 117, 0.712);
+        width: 400px;
+        height: 150px;
+        font-size: 20px;
+        border-radius: 20px;
+        padding: 20px;
+
+    }
+
+    .infor-booking-fail {
+        text-align: center;
+        text-transform: uppercase;
+        color: red;
+        background-color: rgba(250, 210, 117, 0.712);
+        width: 400px;
+        height: 150px;
+        font-size: 20px;
+        border-radius: 20px;
+        padding: 20px;
+
+    }
+}

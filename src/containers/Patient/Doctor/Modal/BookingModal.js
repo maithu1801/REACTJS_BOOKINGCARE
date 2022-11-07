@@ -67,10 +67,7 @@ class BookingModal extends Component {
                 this.setState({
                     doctorId: doctorId,
                     timeType: timeType
-                }, () => {
-                    console.log("phuc check props: ", this.state.timeType);
-                }
-                )
+                })
 
             }
         }

@@ -96,7 +96,7 @@ class ManageDoctor extends Component {
             let dataSelectPrice = this.buildDataInputSelect(resPrice, 'PRICE');
             let dataSelectPayment = this.buildDataInputSelect(resPayment, 'PAYMENT');
             let dataSelectProvince = this.buildDataInputSelect(resProvince, 'PROVINCE');
-            console.log('mai thu check data new: ', dataSelectPrice, dataSelectPayment, dataSelectProvince);
+
             this.setState({
                 listPrice: dataSelectPrice,
                 listPayment: dataSelectPayment,
@@ -110,7 +110,6 @@ class ManageDoctor extends Component {
             let dataSelectPrice = this.buildDataInputSelect(resPrice, 'PRICE');
             let dataSelectPayment = this.buildDataInputSelect(resPayment, 'PAYMENT');
             let dataSelectProvince = this.buildDataInputSelect(resProvince, 'PROVINCE');
-            console.log('mai thu check data new: ', dataSelectPrice, dataSelectPayment, dataSelectProvince);
             this.setState({
                 listDoctors: dataSelect,
                 listPrice: dataSelectPrice,
