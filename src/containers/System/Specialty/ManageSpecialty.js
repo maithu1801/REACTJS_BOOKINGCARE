@@ -47,7 +47,7 @@ class ManageSpecialty extends Component {
             descriptionMarkdown: text,
         })
         console.log('>>> mai thu check 	descriptionHTML: ', this.state.descriptionHTML);
-        console.log('>>> mai thu check  this.state.descriptionMarkdown: ', this.state.descriptionMarkdown);
+        console.log('>>> mai thu check  descriptionMarkdown: ', this.state.descriptionMarkdown);
     }
 
     handleOnChangeImage = async (event) => {
@@ -64,9 +64,15 @@ class ManageSpecialty extends Component {
 
     handleSaveNewSpecialty = async () => {
         let res = await createNewSpecialty(this.state);
-        console.log('>>> mai thu check res: ', res);
         if (res && res.errCode === 0) {
-            toast.success('Add new specialty succeeds!')
+            toast.success('Add new specialty succeeds!');
+            console.log('>>> mai thu check save descriptionMarkdown: ', this.state.descriptionMarkdown);
+            this.setState({
+                name: '',
+                imageBase64: '',
+                descriptionHTML: '',
+                descriptionMarkdown: '',
+            })
         } else {
             toast.error('Somthing wrongs...')
 
@@ -97,8 +103,8 @@ class ManageSpecialty extends Component {
                         <MdEditor
                             style={{ height: '300px' }}
                             renderHTML={text => mdParser.render(text)}
-                            onChange={this.handleEditorChange}
-                            value={this.state.descriptionMardown}
+                            onChange={(html, text) => this.handleEditorChange(html, text)}
+                            value={this.state.descriptionMarkdown}
                         />
                     </div>
                     <div className="col-12">

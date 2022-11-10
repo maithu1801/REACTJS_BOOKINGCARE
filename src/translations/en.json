@@ -56,7 +56,8 @@
     },
     "homepage": {
         "outstanding-doctor": "Lasst week's featured doctor",
-        "more-info": "More Info"
+        "more-infor": "More Infor",
+        "specialty-poplular": "Popular specialty"
     },
     "manage-schedule": {
         "title": "Manage doctor's examination plan",
@@ -73,7 +74,7 @@
         },
         "extra-infor-doctor": {
             "text-address": "Address of examination",
-            "price": "Examination price",
+            "price": "Examination price: ",
             "detail": "See details",
             "payment": "The patient can pay the cost in the form of: ",
             "hide-price": "Hide price list"
@@ -105,7 +106,9 @@
             "province": "Province",
             "nameClinic": "Clinic's name",
             "addressClinic": "Clinic's address",
-            "note": "Note"
+            "note": "Note",
+            "speciality": "Specialty",
+            "select-clinic": "Clinic"
         }
     }
 }
