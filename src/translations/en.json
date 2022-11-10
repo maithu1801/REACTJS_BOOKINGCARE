@@ -1,6 +1,6 @@
 {
     "homeheader": {
-        "speciality": "Medical specialty",
+        "specialty": "Medical specialty",
         "serchdoctor": "Find a doctor by specialty",
         "facility": "Health facilities",
         "select-room": "Choose hospital clinic",
@@ -14,7 +14,7 @@
     "banner": {
         "title1": "MEDICAL PLATFORM",
         "title2": "COMPREHENSIVE HEALTH CARE",
-        "child1": "speciality examination",
+        "child1": "specialty examination",
         "child2": "Remote examination",
         "child3": "General examination",
         "child4": "Medical test",
@@ -30,8 +30,8 @@
             "crud-redux": "CRUD Redux",
             "clinic": "Clinics",
             "manage-clinic": "Manage clinics",
-            "speciality": "Specialtes",
-            "manage-speciality": "Manage speciality",
+            "specialty": "Specialtes",
+            "manage-specialty": "Manage specialty",
             "handbook": "Handbook",
             "manage-handbook": "Manage handbook"
         },
@@ -107,7 +107,7 @@
             "nameClinic": "Clinic's name",
             "addressClinic": "Clinic's address",
             "note": "Note",
-            "speciality": "Specialty",
+            "specialty": "Specialty",
             "select-clinic": "Clinic"
         }
     }

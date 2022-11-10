@@ -28,10 +28,10 @@ export const adminMenu = [
 
     },
     {//quan ly chuyen khoa
-        name: 'menu.admin.manage-speciality',
+        name: 'menu.admin.manage-specialty',
         menus: [
             {
-                name: 'menu.admin.manage-speciality', link: '/system/manage-specialty'
+                name: 'menu.admin.manage-specialty', link: '/system/manage-specialty'
             },
         ]
     },

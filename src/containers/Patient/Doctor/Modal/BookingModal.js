@@ -160,7 +160,7 @@ class BookingModal extends Component {
         if (dataTime && !_.isEmpty(dataTime)) {
             doctorId = dataTime.doctorId
         }
-        console.log('kiem tra dataTime', dataTime);
+
         return (
             <Modal
                 isOpen={isOpenModal}
