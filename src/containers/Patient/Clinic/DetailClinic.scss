@@ -1,0 +1,84 @@
+.detail-specialty-container-cl {
+
+
+    .description-specialty-body-cl {
+        padding: 0 100px;
+        background: #eee;
+        display: flex;
+        flex-direction: column;
+
+        .description-specialty-cl {
+            background-color: white !important;
+            height: 450px;
+            margin-top: 70px;
+            padding: 20px;
+
+            h1,
+            h2,
+            h3 {
+                font-size: 16px;
+                font-weight: 600;
+            }
+        }
+
+        .search-sp-doctor-cl {
+            select {
+                height: 30px;
+                padding: 5px 8px;
+                border: none;
+                outline: none;
+                border-radius: 3px;
+                cursor: pointer;
+                margin-top: 10px;
+
+            }
+        }
+
+        .each-dotor-cl {
+            display: flex;
+            width: 100%;
+            min-height: 300px;
+            margin: 10px 0;
+            padding: 10px;
+
+            background-color: #fff;
+            box-shadow: 0 1px 6px #20212447;
+            border-radius: 8px;
+
+            .dt-content-left-cl {
+                width: 50%;
+                border-right: 1px solid #ddd;
+
+                .profile-doctor-container-cl {
+                    .down {
+                        padding: 5px;
+                    }
+                }
+            }
+
+            .dt-content-right-cl {
+                width: 50%;
+                padding: 10px;
+
+
+                .doctor-schedule-cl {
+                    .doctor-schedule-container-cl {
+                        border-right: unset !important;
+                    }
+                }
+
+                .doctor-extraInfor-cl {
+                    border-top: 1px solid #ddd;
+                    margin-top: 10px;
+                    padding-top: 10px;
+
+                    .doctor-extraInfor-container-cl {
+                        padding-left: 0 !important;
+                    }
+                }
+            }
+        }
+    }
+
+
+}
