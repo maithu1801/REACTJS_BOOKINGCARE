@@ -26,13 +26,14 @@ class DetailSpecialty extends Component {
     async componentDidMount() {
         if (this.props.match && this.props.match.params && this.props.match.params.id) {
             let id = this.props.match.params.id;
+
             let res = await getDetailSpecialtyById({
                 id: id,
                 location: 'ALL'
             });
-            console.log('nhan du lieu res: ', res);
+
             let resProvince = await getAllCodeService('PROVINCE');
-            console.log('nhan du lieu resProvince: ', resProvince);
+
 
             if (res && res.errCode === 0 && resProvince && resProvince.errCode === 0) {
                 let data = res.data;
@@ -45,19 +46,57 @@ class DetailSpecialty extends Component {
                         })
                     }
                 }
-
-
+                let dataProvince = resProvince.data;
+                if (dataProvince && dataProvince.length > 0) {
+                    dataProvince.unshift({ //day len tham so dau tien
+                        createdAt: null,
+                        keyMap: "ALL",
+                        type: "PROVINCE",
+                        valueEn: "ALL",
+                        valueVi: "Toàn quốc",
+                    })
+                }
                 this.setState({
                     dataDetailSpecialty: res.data,
                     arrDoctorId: arrDoctorId,
-                    listProvince: resProvince.data
+                    listProvince: dataProvince ? dataProvince : []
                 })
 
 
             }
-            console.log('du lieu listProvince: ', this.state.listProvince);
+
         }
 
+    }
+
+    handleOnChangeSelect = async (event) => {
+        if (this.props.match && this.props.match.params && this.props.match.params.id) {
+            let id = this.props.match.params.id;
+            let location = event.target.value;
+
+            let res = await getDetailSpecialtyById({
+                id: id,
+                location: location
+            });
+
+            if (res && res.errCode === 0) {
+                let data = res.data;
+                let arrDoctorId = [];
+                if (data && !_.isEmpty(res.data)) {
+                    let arr = data.doctorSpecialty;
+                    if (arr && arr.length > 0) {
+                        arr.map(item => {
+                            arrDoctorId.push(item.doctorId)
+                        })
+                    }
+                }
+                this.setState({
+                    dataDetailSpecialty: res.data,
+                    arrDoctorId: arrDoctorId,
+                })
+            }
+            console.log('dataDetailSpecialty: ', this.state.dataDetailSpecialty);
+        }
     }
 
     async componentDidUpdate(prevProps, prevState, snapshot) {
@@ -66,14 +105,11 @@ class DetailSpecialty extends Component {
         }
     }
 
-    handleOnChangeSelect = (event) => {
-        console.log('maithu check onchange', event.target.value)
-    }
 
     render() {
         let { arrDoctorId, dataDetailSpecialty, listProvince } = this.state;
-        console.log('check state123: ', this.state)
         let { language } = this.props;
+        console.log('listProvince: ', listProvince);
         return (
             <>
                 <div className='detail-specialty-container'>
@@ -106,10 +142,12 @@ class DetailSpecialty extends Component {
                                 return (
                                     <div className='each-dotor' key={index}>
                                         <div className='dt-content-left'>
-                                            <div className='profile-doctor'>
+                                            <div className='profile-doctor-container '>
                                                 <ProfileDoctor
                                                     doctorId={item}
                                                     isShowDesciptionDoctor={true}
+                                                    isShowLinkDetail={true}
+                                                    isShowPrice={false}
                                                 />
                                             </div>
                                         </div>

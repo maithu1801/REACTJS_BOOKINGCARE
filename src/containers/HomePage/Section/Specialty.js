@@ -25,14 +25,14 @@ class Specialty extends Component {
     }
 
     handleViewDetailSpecialty = (item) => {
-        console.log('chekc item: ', item);
+
         if (this.props.history) {
             this.props.history.push(`/detail-specialty/${item.id}`)
         }
     }
     render() {
         let { dataSpecialty } = this.state;
-        console.log('lay dc dataSpecialty: ', dataSpecialty);
+
         return (
             <div className='section-share section-specialty'>
                 <div className='section-container'>
