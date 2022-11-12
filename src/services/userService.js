@@ -77,6 +77,17 @@ const getAllClinic = () => {
 const getDetailClinicById = (data) => {
     return axios.get(`/api/get-detail-clinic-by-id?id=${data.id}`)
 }
+const getAllPatientDoctor = async (data) => {
+    // này là check dữ liệu bên thằng contenter gửi đi, nó bỏ data vô rồi bắn đi qua node, xong no nhận bên node trả ra biến nận về rồi return
+    // bình thường ình viết kiểu rút gon, r chạy thử đi
+    console.log('React gưi di', data);
+    let nhanve = await axios.get(`/api/get-list-patient-for-doctor?doctorId=${data.doctorId}&date=${data.date}`);
+    console.log('react nhan ve: ', nhanve);
+    // ben serve dau
+    return nhanve;
+}
+
+
 
 export {
     handleLoginApi,
@@ -101,4 +112,5 @@ export {
     createNewClinic,
     getAllClinic,
     getDetailClinicById,
+    getAllPatientDoctor
 }
