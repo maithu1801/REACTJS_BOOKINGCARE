@@ -1,7 +1,14 @@
-.manage-patient-container {
+div._loading_overlay_wrapper {
+    position: unset;
 
+    ._loading_overlay_overlay {
+        z-index: 1000000;
+    }
+}
+
+.manage-patient-container {
     .m-p-title {
-        font-size: 15px;
+        font-size: 20px;
         margin: 10px 0;
         text-align: center;
         text-transform: uppercase;
@@ -11,19 +18,24 @@
     .manage-patient-body {
         padding: 0 20px;
 
+        .form-group {
+            font-size: 18px;
+        }
+
         .table-manage-patient {
 
             table,
             th,
             td {
-                border: 1px solid black;
+                border: 1px solid #cacaca;
                 border-collapse: collapse;
             }
 
-            th,
-            td {
+            th {
                 padding: 5px;
                 text-align: left;
+                color: white;
+                background: #0071ba;
             }
 
             button {
@@ -39,11 +51,12 @@
                 background: orange;
             }
 
-            .mp-btn-remedy {
-                height: 30px;
-                border-radius: 3px;
-                background: #39dca0;
+            .note {
+                color: blue;
+                font-size: 20px;
+                font-weight: 50px;
             }
+
         }
     }
 }
