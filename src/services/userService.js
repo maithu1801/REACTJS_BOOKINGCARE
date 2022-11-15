@@ -87,6 +87,11 @@ const postSendRemedy = (data) => {
     return axios.post('/api/send-remedy', data)
 }
 
+const getListHistory = (data) => {
+    console.log('data: ', data);
+    return axios.post('/api/history-patient', data)
+}
+
 export {
     handleLoginApi,
     getAllUsers,
@@ -111,5 +116,6 @@ export {
     getAllClinic,
     getDetailClinicById,
     getAllPatientDoctor,
-    postSendRemedy
+    postSendRemedy,
+    getListHistory
 }
