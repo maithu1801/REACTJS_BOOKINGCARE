@@ -3,12 +3,15 @@ import { connect } from "react-redux";
 import './ManagePatient.scss';
 import { FormattedMessage } from "react-intl";
 import DatePicker from '../../../components/Input/DatePicker';
-import { getAllPatientDoctor, postSendRemedy, getListHistory } from '../../../services/userService';
+import { getAllPatientDoctor, postSendRemedy, getListHistory, createHistory, searchPatient } from '../../../services/userService';
 import moment from "moment";
 import { LANGUAGES } from '../../../utils';
 import RemedyModal from './RemedyModal';
 import { toast } from 'react-toastify';
 import LoadingOverlay from "react-loading-overlay";
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
+import _ from 'lodash';
 
 class ManagePatient extends Component {
     constructor(props) {
@@ -23,7 +26,13 @@ class ManagePatient extends Component {
 
             showTableInfo: false,
             arrInfo: {},
-            patient: ''
+            patient: '',
+            patientId: '',
+
+            imgFullScreen: '',
+            isOpen: false,
+            keyWord: '',
+            formatedDate: '',
         }
     }
 
@@ -39,15 +48,16 @@ class ManagePatient extends Component {
         let { currentDate } = this.state;
         let formatedDate = new Date(currentDate).getTime();
         // this.getDataPatient(user, formatedDate);
+        // conf them cai date nua chu, tai luc tim kiem ket hop voi chonj ngay
         let res = await getAllPatientDoctor({
             doctorId: user.id,
             date: formatedDate,
-
         })
 
         if (res && res.errCode === 0) {
             this.setState({
-                dataPatient: res.data
+                dataPatient: res.data,
+                formatedDate: formatedDate
             })
         }
 
@@ -61,7 +71,8 @@ class ManagePatient extends Component {
     }
     handleOnChangeDatePicker = (date) => {
         this.setState({
-            currentDate: date[0]
+            currentDate: date[0],
+            keyWord: '',
         }, async () => {
             await this.getDataPatient()
         })
@@ -73,11 +84,12 @@ class ManagePatient extends Component {
             patientId: item.patientId,
             email: item.patientData.email,
             timeType: item.timeType,
-            patientName: item.patientData.firstName
+            patientName: item.patientData.firstName,
         }
         this.setState({
             isOpenRemedyModal: true,
-            dataModal: data
+            dataModal: data,
+            patientId: item.patientId
         })
         console.log('lay data:', data);
     }
@@ -134,6 +146,49 @@ class ManagePatient extends Component {
             })
         }
     }
+    handleSaveNewHistory = async () => {
+        let res = await createHistory(this.state);
+        if (res && res.errCode === 0) {
+            toast.success('Add new specialty succeeds!');
+        } else {
+            toast.error('Somthing wrongs...')
+            console.log('check res: ', res)
+        }
+    }
+    imgFullScreen = (link) => {
+        this.setState({
+            imgFullScreen: link,
+            isOpen: true,
+        })
+    }
+    handleOnChangeInput = (event, id) => {
+        let copyState = { ...this.state };
+        copyState[id] = event.target.value;
+        this.setState({
+            ...copyState
+        })
+    }
+    searchPatient = async () => {
+        // bên đây gửi dữ liệu, bao gồm keyWord nhập vô, ngày, và id bác sĩ
+        // Gửi qua bên node, do nhập là nhập ten bệnh nhân, ma trong bang booking chỉ có id bệnh nhân
+        // nên phải tìm ra id bên nhân có tên trùng với nhập vô, do khi nhập tên nó tìm giống, ví dụ le van lam, le ngoc phuc
+        //  tim chu le nó sẽ ra 2 cái id nên mình sẽ phải tra từng id bệnh nhân tìn đc vào bảng booking
+        // nêu id benh nhan nao co trong bang booking + idbáci + ngay trung khop thi them vo mang ket qua,
+        let data = {
+            keyWord: this.state.keyWord,
+            doctorId: this.props.user.id,
+            date: this.state.formatedDate
+        }
+        let res = await searchPatient(data);
+        if (!_.isEmpty(res.booking)) {
+            // trả ket qua ve gan lai vo bien dtâPtien giong nhu cai ham dau tien khi chon ngay no gán vào
+            this.setState({
+                dataPatient: res.booking,
+            })
+        } else {
+            toast.warning("Không tìm thấy dữ liệu trùng khớp với yêu cầu !");
+        }
+    }
     render() {
         let { dataPatient, isOpenRemedyModal, dataModal } = this.state;
         let { language } = this.props;
@@ -158,8 +213,8 @@ class ManagePatient extends Component {
                                         <tr>
                                             <td className="table-title">Ngày</td>
                                             <td className="table-title">Bác sĩ</td>
-                                            <td className="table-title">Mô tả</td>
-                                            <td className="table-title">File</td>
+                                            <td className="table-title">Lịch sử bệnh án</td>
+                                            <td className="table-title">Đơn thuốc</td>
                                         </tr>
                                         {arrInfo && arrInfo.length > 0 && arrInfo.map((item, index) => {
                                             let date = new Date(item.createdAt);
@@ -172,15 +227,18 @@ class ManagePatient extends Component {
                                             if (item.files) {
                                                 imageBase64 = new Buffer(item.files, 'base64').toString('binary');
                                             }
-                                            console.log('imgae:', imageBase64);
+
                                             return (
                                                 <React.Fragment>
                                                     <tr key={index}>
                                                         <td >{time_vi}</td>
                                                         <td > {item.dataDoctor.lastName} {item.dataDoctor.firstName}</td>
                                                         <td >{item.description}</td>
-                                                        <td style={{ textAlign: 'center' }}>
-                                                            <img className='img-avt' src={imageBase64} /></td>
+                                                        <td style={{ textAlign: 'center', cursor: 'pointer' }}>
+                                                            <img className='img-avt' src={imageBase64}
+                                                                style={{ cursor: 'pointer' }}
+                                                                onClick={() => this.imgFullScreen(imageBase64)}
+                                                            /></td>
                                                     </tr>
                                                 </React.Fragment>
                                             )
@@ -210,6 +268,20 @@ class ManagePatient extends Component {
                                         value={this.state.currentDate}
                                     />
                                 </div>
+                                <div className='search'>
+                                    <label>Tên bệnh nhân: </label>
+                                    <input type="text"
+                                        placeholder='Tìm kiếm'
+                                        value={this.state.keyWord}
+                                        onChange={(event) => this.handleOnChangeInput(event, 'keyWord')}
+                                    ></input>
+                                    <div className="tim_kiem"
+                                        onClick={() => this.searchPatient()}
+                                    ><i className="fas fa-search"></i></div>
+                                    <div className="cap_nhat"
+                                        onClick={() => this.getDataPatient()}
+                                    ><i className="fas fa-undo" ></i></div>
+                                </div>
                                 <div className="col-12 table-manage-patient">
                                     <table style={{ width: '100%' }}>
                                         <tbody>
@@ -222,7 +294,7 @@ class ManagePatient extends Component {
                                                 <th>Actions</th>
                                                 <th>Lịch sử</th>
                                             </tr>
-                                            {dataPatient && dataPatient.length > 0 ?
+                                            {dataPatient && dataPatient.length > 0 && !_.isEmpty(dataPatient) ?
                                                 dataPatient.map((item, index) => {
                                                     let time = language === LANGUAGES.VI ?
                                                         item.timeTypeDataPatient.valueVi : item.timeTypeDataPatient.valueEn;
@@ -240,7 +312,7 @@ class ManagePatient extends Component {
                                                                     onClick={() => this.handleBtnComfirm(item)}
                                                                 >Xác nhận</button>
                                                             </td>
-                                                            <td className="btn-show-table-info"><i class="fas fa-ellipsis-h"
+                                                            <td className="btn-show-table-info"><i className="fas fa-ellipsis-h"
                                                                 onClick={() => this.showInfoTable(item.patientId)}
                                                             ></i></td>
                                                         </tr>
@@ -258,14 +330,22 @@ class ManagePatient extends Component {
                         </div>
                         <RemedyModal
                             isOpenModal={isOpenRemedyModal}
+                            doctorId={this.props.user.id}
+                            patientId={this.state.patientId}
                             dataModal={dataModal}
                             closeRemedyModal={this.closeRemedyModal}
                             sendRemedy={this.sendRemedy}
                         />
                     </LoadingOverlay>
+
                 </React.Fragment>
             }
-
+                {this.state.isOpen === true &&
+                    <Lightbox
+                        mainSrc={this.state.imgFullScreen}
+                        onCloseRequest={() => this.setState({ isOpen: false })}
+                    />
+                }
             </>
 
         );

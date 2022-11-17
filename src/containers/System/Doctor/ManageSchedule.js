@@ -38,6 +38,7 @@ class ManageSchedule extends Component {
         }
         if (prevProps.allScheduleTime !== this.props.allScheduleTime) {
             let data = this.props.allScheduleTime;
+            console.log('data time:', data);
             if (data && data.length > 0) {
                 data = data.map(item => ({ ...item, isSelected: false }))
             }
@@ -45,6 +46,8 @@ class ManageSchedule extends Component {
                 rangeTime: data
             })
         }
+        console.log('componentDidUpdate:', this.state.rangeTime);
+
     }
     buildDataInputSelect = (inputData) => {
         let result = [];
@@ -82,7 +85,9 @@ class ManageSchedule extends Component {
                 rangeTime: rangeTime
             })
         }
+
     }
+
     handleSaveSchedule = async () => {
         let { rangeTime, selectedDoctor, currentDate } = this.state;
         let result = [];

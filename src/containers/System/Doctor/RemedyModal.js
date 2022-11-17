@@ -6,6 +6,9 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import { CommonUtils } from '../../../utils';
+import { createHistory } from '../../../services/userService';
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 
 class RemedyModal extends Component {
 
@@ -13,7 +16,8 @@ class RemedyModal extends Component {
         super(props);
         this.state = {
             email: '',
-            imgBase64: ''
+            imgBase64: '',
+            description: '',
         }
     }
 
@@ -49,13 +53,32 @@ class RemedyModal extends Component {
         }
     }
 
-    handleSendRemedy = () => {
-        this.props.sendRemedy(this.state)
+    handleSendRemedy = async () => {
+        this.props.sendRemedy(this.state);
+        let data = {
+            image: this.state.imgBase64,
+            doctorId: this.props.doctorId,
+            patientId: this.props.patientId,
+            description: this.state.description,
+        }
+        let res = await createHistory(data);
+        if (res && res.errCode === 0) {
+            toast.success('Add new specialty succeeds!');
+        } else {
+            toast.error('Somthing wrongs...');
+        }
     }
 
+    handleOnChangeInput = (event, id) => {
+        let stateCopy = { ...this.state }
+        stateCopy[id] = event.target.value;
+        this.setState({
+            ...stateCopy
+        })
+    }
     render() {
         let { isOpenModal, closeRemedyModal, dataModal, sendRemedy } = this.props;
-        console.log('isOpenModal', isOpenModal);
+
         return (
             <Modal
                 isOpen={isOpenModal}
@@ -79,6 +102,12 @@ class RemedyModal extends Component {
                             />
                         </div>
                         <div className='col-6 form-group'>
+                            <label>Ghi chú bệnh án</label>
+                            <input className='form-control' type="text" value={this.state.description}
+                                onChange={(event) => this.handleOnChangeInput(event, 'description')}
+                            />
+                        </div>
+                        <div className='col-6 form-group'>
                             <label>Chọn file đơn thuốc</label>
                             <input className='form-control-file' type="file"
                                 onChange={(event) => this.handleOnchangeImage(event)}
@@ -87,7 +116,7 @@ class RemedyModal extends Component {
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={() => this.handleSendRemedy()}>Send</Button>
+                    <Button color="primary" onClick={() => this.handleSendRemedy()}>Send and Save</Button>
                     <Button color="secondary" onClick={closeRemedyModal}>Cancel</Button>
                 </ModalFooter>
 

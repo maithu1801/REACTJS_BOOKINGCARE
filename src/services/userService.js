@@ -83,13 +83,16 @@ const getAllPatientDoctor = async (data) => {
 }
 
 const postSendRemedy = (data) => {
-    console.log('data: ', data);
     return axios.post('/api/send-remedy', data)
 }
-
+const createHistory = (data) => {
+    return axios.post(`/api/create-history`, data);
+}
 const getListHistory = (data) => {
-    console.log('data: ', data);
-    return axios.post('/api/history-patient', data)
+    return axios.post(`/api/history-patient`, data);
+}
+const searchPatient = (data) => {
+    return axios.post(`/api/search-patient`, data);
 }
 
 export {
@@ -117,5 +120,7 @@ export {
     getDetailClinicById,
     getAllPatientDoctor,
     postSendRemedy,
-    getListHistory
+    getListHistory,
+    createHistory,
+    searchPatient
 }
