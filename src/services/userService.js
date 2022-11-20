@@ -95,6 +95,10 @@ const searchPatient = (data) => {
     return axios.post(`/api/search-patient`, data);
 }
 
+const manageMedicine = (data) => {
+    return axios.post(`/api/medicines-manage`, data);
+}
+
 export {
     handleLoginApi,
     getAllUsers,
@@ -122,5 +126,6 @@ export {
     postSendRemedy,
     getListHistory,
     createHistory,
-    searchPatient
+    searchPatient,
+    manageMedicine
 }

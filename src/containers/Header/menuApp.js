@@ -58,5 +58,13 @@ export const doctorMenu = [
                 name: 'menu.doctor.manage-patient', link: '/doctor/manage-patient'
             },
         ]
+    },
+    {
+        name: 'menu.doctor.manage-medicine',
+        menus: [
+            {//quan ly kho thuoc
+                name: 'menu.doctor.medicine-store', link: '/doctor/manage-medicine'
+            },
+        ]
     }
 ]

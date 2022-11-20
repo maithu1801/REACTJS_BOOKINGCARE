@@ -55,6 +55,7 @@ class RemedyModal extends Component {
 
     handleSendRemedy = async () => {
         this.props.sendRemedy(this.state);
+
         let data = {
             image: this.state.imgBase64,
             doctorId: this.props.doctorId,
@@ -135,6 +136,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+
     };
 };
 

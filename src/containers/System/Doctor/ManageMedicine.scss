@@ -1,0 +1,121 @@
+.medicine-manage {
+    width: 100%;
+    padding: 10px 100px;
+
+    .manage-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 20px;
+
+        .medicine-input {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+
+            .input {
+                input {
+                    outline: none;
+                    border: 1px solid rgba(0, 0, 0, 0.527);
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    border-radius: 10px;
+                    min-width: 400px;
+                }
+            }
+
+            .btn-new {
+                padding: 10px 20px;
+                background-color: blue;
+                border-radius: 10px;
+                border: 1px solid rgb(0, 0, 108);
+                color: white;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(3, 3, 169);
+                }
+            }
+
+            .btn-undo {
+                padding: 10px 20px;
+                background-color: orange;
+                border-radius: 10px;
+                border: 1px solid rgb(108, 50, 0);
+                color: white;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(175, 114, 0);
+                }
+            }
+
+            .btn-search {
+                padding: 10px 20px;
+                background-color: green;
+                border-radius: 10px;
+                border: 1px solid rgba(1, 94, 1, 0.975);
+                color: white;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(1, 193, 1);
+                }
+            }
+        }
+
+
+        table {
+
+            tbody {
+                tr {
+                    td {
+
+                        width: 600px;
+                        border: 1px solid #cacaca;
+                        border-collapse: collapse;
+
+                        &.title {
+                            text-align: left;
+                            font-weight: bold;
+                            font-size: 17px;
+                            color: white;
+                            background-color: blue;
+                            padding: 10px;
+
+                            &.center {
+                                text-align: center;
+                            }
+                        }
+
+                        i {
+                            padding: 0px 10px;
+                            cursor: pointer;
+
+                            &.fa-pencil-alt {
+                                color: orange;
+                            }
+
+                            &.fa-trash {
+                                color: red;
+                            }
+
+                            &:hover {
+                                color: blue;
+                            }
+                        }
+
+                        &.center {
+                            text-align: center;
+                        }
+                    }
+                }
+
+
+            }
+        }
+    }
+}

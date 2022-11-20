@@ -60,9 +60,21 @@ class VerifyEmail extends Component {
                         :
                         <div>
                             {+errCode === 0 ?
-                                <div className='infor-booking-sucess'>Xác nhận lịch hẹn thành công!</div>
+                                <>
+                                    <div className='infor-booking-sucess'>Xác nhận lịch hẹn thành công!</div>
+                                    <div className='btn-close'
+                                        onClick={() => window.close()}
+                                    >OK</div>
+                                </>
                                 :
-                                <div className='infor-booking-fail'>Lịch hẹn không tồn tại hoặc đã được xác nhận!</div>
+                                <>
+                                    <div className='infor-booking-fail'>Lịch hẹn không tồn tại hoặc đã được xác nhận!
+                                        <div className='btn-close'
+                                            onClick={() => window.close()}
+                                        >OK</div>
+                                    </div>
+
+                                </>
                             }
                         </div>
                     }
