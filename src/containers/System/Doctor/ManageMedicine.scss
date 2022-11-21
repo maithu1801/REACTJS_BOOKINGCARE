@@ -16,6 +16,49 @@
             align-items: center;
             gap: 20px;
 
+            .btn-excel {
+                width: 60px;
+                height: 44px;
+                background-color: rgb(1, 195, 198);
+                border: 1px solid rgb(2, 136, 154);
+                position: relative;
+                border-radius: 10px;
+
+                &:hover {
+                    background-color: rgb(4, 135, 155);
+                }
+
+                #test-table-xls-button {
+                    width: 100%;
+                    height: 100%;
+                    background-color: transparent;
+                    border: 0px;
+                    outline: none;
+                    position: absolute;
+                    z-index: 2;
+                    cursor: pointer;
+                }
+
+                .excel-icon {
+                    position: absolute;
+                    z-index: 1;
+                    top: 0px;
+                    left: 0px;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    color: white;
+
+                    i {
+                        font-size: 20px;
+                    }
+                }
+            }
+
+
             .input {
                 input {
                     outline: none;
@@ -44,25 +87,25 @@
                 padding: 10px 20px;
                 background-color: orange;
                 border-radius: 10px;
-                border: 1px solid rgb(108, 50, 0);
+                border: 1px solid rgb(163, 115, 3);
                 color: white;
                 cursor: pointer;
 
                 &:hover {
-                    background-color: rgb(175, 114, 0);
+                    background-color: rgb(203, 117, 6);
                 }
             }
 
             .btn-search {
                 padding: 10px 20px;
-                background-color: green;
+                background-color: rgb(2, 188, 2);
                 border-radius: 10px;
                 border: 1px solid rgba(1, 94, 1, 0.975);
                 color: white;
                 cursor: pointer;
 
                 &:hover {
-                    background-color: rgb(1, 193, 1);
+                    background-color: rgb(2, 95, 2);
                 }
             }
         }
@@ -83,7 +126,7 @@
                             font-weight: bold;
                             font-size: 17px;
                             color: white;
-                            background-color: blue;
+                            background-color: #0071ba;
                             padding: 10px;
 
                             &.center {
@@ -116,6 +159,10 @@
 
 
             }
+        }
+
+        #table-to-xls {
+            display: none;
         }
     }
 }

@@ -20,6 +20,12 @@ class HomeHeader extends Component {
             this.props.history.push(`/home`)
         }
     }
+    specialty = (doctor) => {
+        if (this.props.history) {
+            this.props.history.push(`/detail-doctor/${doctor.id}`)
+        }
+
+    }
 
     render() {
         let language = this.props.language;
@@ -33,7 +39,10 @@ class HomeHeader extends Component {
                             <img className="header-logo" src={logo} onClick={() => this.returnToHome()} />
                         </div>
                         <div className="center-content">
-                            <div className="child-content">
+                            <div className="child-content"
+
+
+                            >
                                 <div><b><FormattedMessage id="homeheader.specialty" /></b></div>
                                 <div className="subs-title"><FormattedMessage id="homeheader.serchdoctor" /></div>
                             </div>
@@ -43,7 +52,7 @@ class HomeHeader extends Component {
                             </div>
                             <div className="child-content">
                                 <div><b><FormattedMessage id="homeheader.doctor" /></b></div>
-                                <div className="subs-title"><FormattedMessage id="homeheader.select-room" /></div>
+                                <div className="subs-title"><FormattedMessage id="homeheader.select-doctor" /></div>
                             </div>
                             <div className="child-content">
                                 <div><b><FormattedMessage id="homeheader.fee" /></b></div>
@@ -74,10 +83,6 @@ class HomeHeader extends Component {
                         <div className='content-up'>
                             <div className='title1'><FormattedMessage id="banner.title1" /></div>
                             <div className='title2'><FormattedMessage id="banner.title2" /></div>
-                            <div className='search'>
-                                <i className="fas fa-search"></i>
-                                <input type="text" placeholder='Tìm kiếm'></input>
-                            </div>
                         </div>
                         <div className='content-down'>
                             <div className='options'>

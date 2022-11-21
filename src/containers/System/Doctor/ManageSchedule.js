@@ -154,8 +154,9 @@ class ManageSchedule extends Component {
                             />
                         </div>
                         <div className="col-6 from-group">
-                            <label><FormattedMessage id="manage-schedule.choose-date" /></label>
-
+                            <div>
+                                <label><FormattedMessage id="manage-schedule.choose-date" /></label>
+                            </div>
                             <DatePicker
                                 onChange={this.handleOnChangeDatePicker}
                                 className="from-control"

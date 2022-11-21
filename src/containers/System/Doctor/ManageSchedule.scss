@@ -1,12 +1,29 @@
 .manage-schedule-container {
     .m-s-title {
         text-transform: uppercase;
-        margin-top: 15px;
-        margin-bottom: 15px;
-        font-weight: 600;
-        font-size: 17px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        color: blue;
+        font-weight: bold;
+        font-size: 25px;
         text-align: center;
 
+    }
+
+    .container {
+        .row {
+            .from-group {
+                font-size: 18px;
+
+                label {
+                    font-size: 20px;
+                }
+
+                input {
+                    font-size: 18px;
+                }
+            }
+        }
     }
 
     .pick-hour-container {
@@ -19,6 +36,10 @@
         button {
             padding: 5px 15px;
             border: 1px solid grey;
+
+            &:hover {
+                background-color: rgb(237, 233, 3);
+            }
         }
     }
 
@@ -30,5 +51,11 @@
 
     .btn-save-schedule {
         margin-top: 20px;
+        font-size: 20px;
+        border: 1px solid rgb(3, 3, 193);
+
+        &:hover {
+            background-color: rgb(3, 18, 224);
+        }
     }
 }

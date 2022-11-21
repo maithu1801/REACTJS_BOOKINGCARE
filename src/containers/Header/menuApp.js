@@ -35,16 +35,6 @@ export const adminMenu = [
             },
         ]
     },
-
-    {//quan ly cam nang
-        name: 'menu.admin.handbook',
-        menus: [
-            {
-                name: 'menu.admin.manage-handbook', link: '/system/manage-handbook'
-            },
-        ]
-
-    },
 ];
 
 export const doctorMenu = [

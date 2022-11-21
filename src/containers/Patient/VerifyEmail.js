@@ -61,10 +61,12 @@ class VerifyEmail extends Component {
                         <div>
                             {+errCode === 0 ?
                                 <>
-                                    <div className='infor-booking-sucess'>Xác nhận lịch hẹn thành công!</div>
-                                    <div className='btn-close'
-                                        onClick={() => window.close()}
-                                    >OK</div>
+                                    <div className='infor-booking-sucess'>Xác nhận lịch hẹn thành công!
+                                        <div className='btn-close'
+                                            onClick={() => window.close()}
+                                        >OK</div>
+                                    </div>
+
                                 </>
                                 :
                                 <>

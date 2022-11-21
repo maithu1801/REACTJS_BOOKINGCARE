@@ -10,7 +10,22 @@ import { toast } from "react-toastify";
 import _ from "lodash";
 import { manageMedicine } from '../../../services/userService';
 import { event } from "jquery";
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
+ReactHTMLTableToExcel.format = (s, c) => {
+    if (c && c['table']) {
+        const html = c.table;
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const rows = doc.querySelectorAll('tr');
+
+        for (const row of rows) row.removeChild(row.firstChild);
+
+        c.table = doc.querySelector('table').outerHTML;
+    }
+
+    return s.replace(/{(\w+)}/g, (m, p) => c[p]);
+};
 
 class ManageSchedule extends Component {
 
@@ -141,9 +156,11 @@ class ManageSchedule extends Component {
         }
 
     }
+
     render() {
         let list = this.state.medicineList;
         return (
+
             <div className='manage-schedule-container'>
                 <div className='m-s-title'>
                     Quản Lý Kho Thuốc
@@ -163,7 +180,7 @@ class ManageSchedule extends Component {
                                     <div className="btn-new"
                                         onClick={() => this.saveMedicine()}
                                     >
-                                        <i class="fas fa-sync"></i> Cập nhật
+                                        <i className="fas fa-sync"></i> Cập nhật
                                     </div>
                                     <div className="btn-undo"
                                         onClick={() => this.setState({
@@ -172,19 +189,19 @@ class ManageSchedule extends Component {
                                             id: '',
                                         })}
                                     >
-                                        <i class="fas fa-undo"></i>
+                                        <i className="fas fa-undo"></i>
                                     </div>
                                 </React.Fragment> :
                                 <React.Fragment>
                                     <div className="btn-new"
                                         onClick={() => this.saveMedicine()}
                                     >
-                                        <i class="fas fa-plus"></i> Thêm Mới
+                                        <i className="fas fa-plus"></i> Thêm Mới
                                     </div>
                                     <div className="btn-search"
                                         onClick={() => this.searchMedicine()}
                                     >
-                                        <i class="fas fa-search"></i>
+                                        <i className="fas fa-search"></i>
                                     </div>
                                     <div className="btn-undo"
                                         onClick={() => {
@@ -196,16 +213,30 @@ class ManageSchedule extends Component {
                                             this.getMedicine();
                                         }}
                                     >
-                                        <i class="fas fa-undo"></i>
+                                        <i className="fas fa-undo"></i>
                                     </div>
                                 </React.Fragment>
-
                             }
+                            <div className="btn-excel">
+                                <ReactHTMLTableToExcel
+                                    id="test-table-xls-button"
+                                    className="download-table-xls-button"
+                                    table="table-to-xls"
+                                    filename="khothuoc"
+                                    sheet="quanlythuoc"
+                                    buttonText=""
+                                >
+                                </ReactHTMLTableToExcel>
+                                <div className="excel-icon">
+                                    <i class="fas fa-file-excel"></i>
+                                </div>
+                            </div>
+
 
 
                         </div>
 
-                        <table>
+                        <table id="table">
                             <tbody>
                                 <tr>
                                     <td className="title">Ngày thêm</td>
@@ -239,13 +270,59 @@ class ManageSchedule extends Component {
                                                 <td>{utime_vi}</td>
                                                 <td>{item.nameMedicine}</td>
                                                 <td className="center">
-                                                    <i class="fas fa-pencil-alt"
+                                                    <i className="fas fa-pencil-alt"
                                                         onClick={() => this.editMedicine(item)}
                                                     ></i>
-                                                    <i class="fas fa-trash"
+                                                    <i className="fas fa-trash"
                                                         onClick={() => this.deleteMedicine(item.id)}
                                                     ></i>
                                                 </td>
+                                            </tr>
+                                        )
+                                    }) :
+                                    <React.Fragment>
+                                        <tr>
+                                            <td colSpan='4' className="center">Không có dữ liệu</td>
+                                        </tr>
+                                    </React.Fragment>
+                                }
+                            </tbody>
+                        </table>
+                        <table id="table-to-xls">
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td className="title">Ngày thêm</td>
+                                    <td className="title">Lần chỉnh sửa cuối</td>
+                                    <td className="title">Tên thuốc</td>
+
+                                </tr>
+                                {list && list.length > 0 ?
+                                    list.map((item, index) => {
+                                        let cdate = new Date(item.createdAt);
+                                        let cdd = cdate.getDate();
+                                        let cmm = cdate.getMonth() + 1;
+                                        let cyy = cdate.getFullYear();
+                                        let ch = cdate.getHours();
+                                        let cm = cdate.getMinutes();
+                                        let ctime_vi = `${ch}:${cm} ${cdd}-${cmm}-${cyy}`;
+                                        let ctime_en = `${ch}:${cm} ${cdd}-${cmm}-${cyy}`;
+
+                                        let udate = new Date(item.updatedAt);
+                                        let udd = udate.getDate();
+                                        let umm = udate.getMonth() + 1;
+                                        let uyy = udate.getFullYear();
+                                        let uh = udate.getHours();
+                                        let um = udate.getMinutes();
+                                        let utime_vi = `${uh}:${um} ${udd}-${umm}-${uyy}`;
+                                        let utime_en = `${uh}:${um} ${udd}-${umm}-${uyy}`;
+
+                                        return (
+                                            <tr key={index}>
+                                                <td></td>
+                                                <td>{ctime_vi}</td>
+                                                <td>{utime_vi}</td>
+                                                <td>{item.nameMedicine}</td>
                                             </tr>
                                         )
                                     }) :

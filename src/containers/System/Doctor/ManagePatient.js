@@ -15,6 +15,22 @@ import _ from 'lodash';
 import { event } from "jquery";
 import { manageMedicine } from '../../../services/userService';
 import html2canvas from "html2canvas";
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
+
+ReactHTMLTableToExcel.format = (s, c) => {
+    if (c && c['table']) {
+        const html = c.table;
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const rows = doc.querySelectorAll('tr');
+
+        for (const row of rows) row.removeChild(row.firstChild);
+
+        c.table = doc.querySelector('table').outerHTML;
+    }
+
+    return s.replace(/{(\w+)}/g, (m, p) => c[p]);
+};
 
 class ManagePatient extends Component {
     constructor(props) {
@@ -339,6 +355,7 @@ class ManagePatient extends Component {
     }
     render() {
         let { dataPatient, isOpenRemedyModal, dataModal } = this.state;
+        console.log('dataPatient', dataPatient);
         let { language } = this.props;
         let arrInfo = this.state.arrInfo;
         let list = this.state.medicineList;
@@ -352,7 +369,7 @@ class ManagePatient extends Component {
                             <div className="htu-box">
                                 <div className="htu-header">
                                     <b>Thuốc: {this.state.nameUse}</b>
-                                    <i class="fas fa-times"
+                                    <i className="fas fa-times"
                                         onClick={() => {
                                             this.setState({
                                                 howtouse: false,
@@ -386,13 +403,13 @@ class ManagePatient extends Component {
                                     <span>
                                         Tạo đơn thuốc
                                     </span>
-                                    <i class="fas fa-save"
+                                    <i className="fas fa-save"
                                         title="Save and Send Email"
                                         onClick={() => this.sendEmail()}
                                     ></i>
                                 </div>
                                 <div className="plan-header-btn">
-                                    <i class="fas fa-sign-out-alt"
+                                    <i className="fas fa-sign-out-alt"
                                         onClick={() => this.setState({
                                             showPlan: false
                                         })}
@@ -427,7 +444,7 @@ class ManagePatient extends Component {
                                             </input>
                                             {list && list.length === 0 &&
                                                 <div className="new">
-                                                    <i class="fas fa-plus"
+                                                    <i className="fas fa-plus"
                                                         onClick={() => this.saveMedicine()}
                                                     ></i>
                                                 </div>
@@ -520,16 +537,7 @@ class ManagePatient extends Component {
                                                             <td colSpan='4' className="center">Chưa cho thuốc</td>
                                                         </tr>
                                                     </React.Fragment>
-
-
                                                 }
-                                                {/* // < tr key={index} >
-                                                //     {medicine.name.map
-
-                                                        //     }
-                                                        //     <td className="max">{item.name}</td>
-                                                        //     <td className="center min">{item.use}</td>
-                                                        // </tr> : */}
                                             </tbody>
                                         </table>
                                     </div>
@@ -544,10 +552,26 @@ class ManagePatient extends Component {
                             <div className="table-content">
                                 <div className="table-header">
                                     <b>LỊCH SỬ KHÁM BỆNH</b>
-                                    <i class="fas fa-sign-out-alt"
+                                    <div className="btn-excel">
+                                        <ReactHTMLTableToExcel
+                                            id="test-table-xls-button"
+                                            className="download-table-xls-button"
+                                            table="excel_history"
+                                            filename="lichsubenhan"
+                                            sheet="lichsu"
+                                            buttonText=""
+                                        >
+                                        </ReactHTMLTableToExcel>
+                                        <div className="excel-icon">
+                                            <i className="fas fa-file-excel"></i>
+                                        </div>
+                                    </div>
+                                    <i className="fas fa-sign-out-alt"
                                         onClick={() => this.setState({ showTableInfo: false })}
                                     ></i>
+
                                 </div>
+
                                 <div className="table-tool">
                                     <b>Bệnh nhân: </b> <span>{this.state.patient}</span>
                                 </div>
@@ -589,6 +613,43 @@ class ManagePatient extends Component {
                                             })}
                                         </tbody>
                                     </table>
+                                    <table id="excel_history">
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td className="table-title">Bệnh nhân</td>
+                                                <td className="table-title">Ngày</td>
+                                                <td className="table-title">Bác sĩ</td>
+                                                <td className="table-title">Lịch sử bệnh án</td>
+
+                                            </tr>
+                                            {arrInfo && arrInfo.length > 0 && arrInfo.map((item, index) => {
+                                                let date = new Date(item.createdAt);
+                                                let dd = date.getDate();
+                                                let mm = date.getMonth() + 1;
+                                                let yy = date.getFullYear();
+                                                let time_vi = `${dd}-${mm}-${yy}`;
+                                                let time_en = `${mm}-${dd}-${yy}`;
+                                                let imageBase64 = '';
+                                                if (item.files) {
+                                                    imageBase64 = new Buffer(item.files, 'base64').toString('binary');
+                                                }
+
+                                                return (
+                                                    <React.Fragment>
+                                                        <tr key={index}>
+                                                            <td></td>
+                                                            <td >{item.dataPatient.firstName}</td>
+                                                            <td >{time_vi}</td>
+                                                            <td > {item.dataDoctor.lastName} {item.dataDoctor.firstName}</td>
+                                                            <td >{item.description}</td>
+                                                        </tr>
+                                                    </React.Fragment>
+                                                )
+                                            })}
+                                        </tbody>
+                                    </table>
+
                                 </div>
                             </div>
                         </div>
@@ -626,8 +687,22 @@ class ManagePatient extends Component {
                                             onClick={() => this.getDataPatient()}
                                         ><i className="fas fa-undo" ></i></div>
                                     </div>
+                                    <div className="btn-excel">
+                                        <ReactHTMLTableToExcel
+                                            id="test-table-xls-button"
+                                            className="download-table-xls-button"
+                                            table="table-to-xls"
+                                            filename="lichsu"
+                                            sheet="lichsukhambenh"
+                                            buttonText=""
+                                        >
+                                        </ReactHTMLTableToExcel>
+                                        <div className="excel-icon">
+                                            <i className="fas fa-file-excel"></i>
+                                        </div>
+                                    </div>
                                     <div className="col-12 table-manage-patient">
-                                        <table style={{ width: '100%' }}>
+                                        <table id="table-to-xls" style={{ width: '100%' }}>
                                             <tbody>
                                                 <tr>
                                                     <th>STT</th>
@@ -642,8 +717,9 @@ class ManagePatient extends Component {
                                                     dataPatient.map((item, index) => {
                                                         let time = language === LANGUAGES.VI ?
                                                             item.timeTypeDataPatient.valueVi : item.timeTypeDataPatient.valueEn;
-                                                        let gender = language === LANGUAGES.VI ?
+                                                        let gender = language === LANGUAGES.EN ?
                                                             item.patientData.genderData.valueVi : item.patientData.genderData.valueEn;
+                                                        console.log('gender', gender);
                                                         return (
                                                             <tr key={index}>
                                                                 <td>{index + 1}</td>
@@ -665,7 +741,7 @@ class ManagePatient extends Component {
                                                                     }
 
                                                                 </td>
-                                                                <td className="btn-show-table-info"><i className="fas fa-ellipsis-h"
+                                                                <td className="btn-show-table-info" title="Xem"><i className="fas fa-ellipsis-h"
                                                                     onClick={() => this.showInfoTable(item.patientId)}
                                                                 ></i></td>
                                                             </tr>
