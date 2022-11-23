@@ -31,6 +31,7 @@ class DetailDoctor extends Component {
                 })
             }
         }
+        console.log('detailDoctor', this.state.detailDoctor);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {

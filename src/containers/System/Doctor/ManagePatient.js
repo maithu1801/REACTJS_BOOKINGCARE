@@ -287,7 +287,7 @@ class ManagePatient extends Component {
             name: item.patientData.firstName,
             address: item.patientData.address,
             gender: item.patientData.gender,
-            doctor: `${this.props.user.firstName} ${this.props.user.lastName}`,
+            doctor: ` ${this.props.user.lastName} ${this.props.user.firstName}`,
             time: time_vi,
         })
     }
@@ -465,7 +465,7 @@ class ManagePatient extends Component {
                                                                 <tr key={index}>
                                                                     <td className="max">{item.nameMedicine}</td>
                                                                     <td className="center min">
-                                                                        <i class="fas fa-plus"
+                                                                        <i className="fas fa-plus"
                                                                             onClick={() => this.howtouse(item)}
                                                                         ></i>
                                                                     </td>
@@ -681,16 +681,19 @@ class ManagePatient extends Component {
                                             onChange={(event) => this.handleOnChangeInput(event, 'keyWord')}
                                         ></input>
                                         <div className="tim_kiem"
+                                            title="Tìm kiếm"
                                             onClick={() => this.searchPatient()}
                                         ><i className="fas fa-search"></i></div>
                                         <div className="cap_nhat"
+                                            title="Cập nhật lại"
                                             onClick={() => this.getDataPatient()}
                                         ><i className="fas fa-undo" ></i></div>
                                     </div>
-                                    <div className="btn-excel">
+                                    <div className="btn-excel" title="Xuất file excel">
                                         <ReactHTMLTableToExcel
                                             id="test-table-xls-button"
                                             className="download-table-xls-button"
+
                                             table="table-to-xls"
                                             filename="lichsu"
                                             sheet="lichsukhambenh"
@@ -717,7 +720,7 @@ class ManagePatient extends Component {
                                                     dataPatient.map((item, index) => {
                                                         let time = language === LANGUAGES.VI ?
                                                             item.timeTypeDataPatient.valueVi : item.timeTypeDataPatient.valueEn;
-                                                        let gender = language === LANGUAGES.EN ?
+                                                        let gender = language === LANGUAGES.VI ?
                                                             item.patientData.genderData.valueVi : item.patientData.genderData.valueEn;
                                                         console.log('gender', gender);
                                                         return (

@@ -25,9 +25,13 @@ class Specialty extends Component {
     }
 
     handleViewDetailSpecialty = (item) => {
-
         if (this.props.history) {
             this.props.history.push(`/detail-specialty/${item.id}`)
+        }
+    }
+    AllSpecialty = async () => {
+        if (this.props.history) {
+            this.props.history.push(`/specialty`)
         }
     }
     render() {
@@ -40,7 +44,8 @@ class Specialty extends Component {
                         <span className='title-section'>
                             <FormattedMessage id="homepage.specialty-poplular" />
                         </span>
-                        <button className='btn-section'>
+                        <button className='btn-section'
+                            onClick={() => this.AllSpecialty()}>
                             <FormattedMessage id="homepage.more-infor" />
                         </button>
                     </div>

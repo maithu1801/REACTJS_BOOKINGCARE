@@ -8,7 +8,7 @@ import DoctorExtraInfor from '../Doctor/DoctorExtraInfor';
 import ProfileDoctor from '../Doctor/ProfileDoctor';
 import { getDetailSpecialtyById, getAllCodeService } from '../../../services/userService';
 import _ from 'lodash';
-import { LANGUAGE, LANGUAGES } from '../../../utils';
+import { LANGUAGES } from '../../../utils';
 
 
 class DetailSpecialty extends Component {
@@ -61,8 +61,6 @@ class DetailSpecialty extends Component {
                     arrDoctorId: arrDoctorId,
                     listProvince: dataProvince ? dataProvince : []
                 })
-
-
             }
 
         }
@@ -109,7 +107,7 @@ class DetailSpecialty extends Component {
     render() {
         let { arrDoctorId, dataDetailSpecialty, listProvince } = this.state;
         let { language } = this.props;
-
+        console.log('dataDetailSpecialty', dataDetailSpecialty);
         return (
             <>
                 <div className='detail-specialty-container'>

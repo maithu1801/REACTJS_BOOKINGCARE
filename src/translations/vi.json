@@ -1,9 +1,9 @@
 {
     "homeheader": {
         "specialty": "Chuyên khoa",
-        "serchdoctor": "Tìm bác sĩ theo chuyên khoa",
+        "searchdoctor": "Tìm theo chuyên khoa",
         "facility": "Cơ sở y tế",
-        "select-room": "Chọn bệnh viện phòng khám",
+        "select-room": "Chọn phòng khám",
         "doctor": "Bác sĩ",
         "select-doctor": "Chọn bác sĩ giỏi",
         "fee": "Gói khám",
@@ -58,7 +58,8 @@
     "homepage": {
         "outstanding-doctor": "Bác sĩ nổi bậc trong tuần",
         "more-infor": "Xem thêm",
-        "specialty-poplular": "Chuyên khoa phổ biến"
+        "specialty-poplular": "Chuyên khoa phổ biến",
+        "facility-poplular": "Cơ sở y tế nổi bật"
     },
     "manage-schedule": {
         "title": "Quản lý kế hoạch khám bệnh của bác sĩ",

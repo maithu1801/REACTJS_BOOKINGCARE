@@ -6,51 +6,79 @@ import { FormattedMessage } from 'react-intl';
 import { changeLanguageApp } from "../../store/actions"
 import { LANGUAGES } from '../../utils';
 import { withRouter } from 'react-router';
-
+import _ from 'lodash';
 
 class HomeHeader extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            dataSpecialty: [],
+            AllSpecialty: false
+        }
+    }
+    componentDidUpdate(prevProps, prevState, snapshot) {
 
+
+    }
 
     changeLanguage = (language) => {
         this.props.changeLanguageAppRedux(language)
     }
 
     returnToHome = () => {
+
         if (this.props.history) {
             this.props.history.push(`/home`)
         }
+        this.setState({
+            AllSpecialty: false
+        })
     }
-    specialty = (doctor) => {
+    AllSpecialty = async () => {
         if (this.props.history) {
-            this.props.history.push(`/detail-doctor/${doctor.id}`)
+            this.props.history.push(`/specialty`)
         }
-
+    }
+    AllClinic = async () => {
+        if (this.props.history) {
+            this.props.history.push(`/clinic`)
+        }
+    }
+    AllDoctor = async () => {
+        if (this.props.history) {
+            this.props.history.push(`/doctorAll`)
+        }
     }
 
     render() {
         let language = this.props.language;
 
         return (
+
             <React.Fragment>
+
                 <div className="home-header-container">
                     <div className="home-header-content">
                         <div className="left-content">
-                            <i className="fas fa-bars"></i>
+
                             <img className="header-logo" src={logo} onClick={() => this.returnToHome()} />
                         </div>
                         <div className="center-content">
+
                             <div className="child-content"
-
-
-                            >
+                                onClick={() => this.AllSpecialty()} >
                                 <div><b><FormattedMessage id="homeheader.specialty" /></b></div>
-                                <div className="subs-title"><FormattedMessage id="homeheader.serchdoctor" /></div>
+                                <div className="subs-title" ><FormattedMessage id="homeheader.searchdoctor" /></div>
                             </div>
-                            <div className="child-content">
+
+
+                            <div className="child-content"
+                                onClick={() => this.AllClinic()} >
                                 <div><b><FormattedMessage id="homeheader.facility" /></b></div>
                                 <div className="subs-title"><FormattedMessage id="homeheader.select-room" /></div>
                             </div>
-                            <div className="child-content">
+                            <div className="child-content"
+                                onClick={() => this.AllDoctor()} >
                                 <div><b><FormattedMessage id="homeheader.doctor" /></b></div>
                                 <div className="subs-title"><FormattedMessage id="homeheader.select-doctor" /></div>
                             </div>
@@ -58,6 +86,8 @@ class HomeHeader extends Component {
                                 <div><b><FormattedMessage id="homeheader.fee" /></b></div>
                                 <div className="subs-title"><FormattedMessage id="homeheader.check-health" /></div>
                             </div>
+
+
                         </div>
                         <div className="right-content">
                             <div className="support"><i className="fas fa-question-circle"></i>
@@ -86,7 +116,7 @@ class HomeHeader extends Component {
                         </div>
                         <div className='content-down'>
                             <div className='options'>
-                                <div className='option-child'>
+                                {/* <div className='option-child'>
                                     <div className='icon-child'><i className='fas fa-hospital'></i></div>
                                     <div className='text-child'><FormattedMessage id="banner.child1" /></div>
                                 </div>
@@ -109,13 +139,15 @@ class HomeHeader extends Component {
                                 <div className='option-child'>
                                     <div className='icon-child'><i className="fas fa-briefcase-medical"></i></div>
                                     <div className='text-child'><FormattedMessage id="banner.child6" /></div>
-                                </div>
+                                </div> */}
                             </div>
 
                         </div>
                     </div>
                 }
             </React.Fragment>
+
+
         );
     }
 }
@@ -125,12 +157,13 @@ const mapStateToProps = state => {
         isLoggedIn: state.user.isLoggedIn,
         userInfo: state.user.userInfo,
         language: state.app.language,
+        topDoctorsRedux: state.admin.topDoctors
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        changeLanguageAppRedux: (language) => dispatch(changeLanguageApp(language))
+        changeLanguageAppRedux: (language) => dispatch(changeLanguageApp(language)),
     };
 };
 

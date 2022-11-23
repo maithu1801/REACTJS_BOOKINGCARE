@@ -1,7 +1,7 @@
 {
     "homeheader": {
         "specialty": "Medical specialty",
-        "serchdoctor": "Find a doctor by specialty",
+        "searchdoctor": "Find a doctor by specialty",
         "facility": "Health facilities",
         "select-room": "Choose hospital clinic",
         "doctor": "Doctor",
@@ -58,7 +58,8 @@
     "homepage": {
         "outstanding-doctor": "Lasst week's featured doctor",
         "more-infor": "More Infor",
-        "specialty-poplular": "Popular specialty"
+        "specialty-poplular": "Popular specialty",
+        "facility-poplular": "Poplular facility"
     },
     "manage-schedule": {
         "title": "Manage doctor's examination plan",

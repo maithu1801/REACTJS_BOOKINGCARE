@@ -1,15 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import './ManageMedicine.scss';
-import { FormattedMessage } from "react-intl";
-import Select from 'react-select';
-import * as actions from "../../../store/actions";
-import { LANGUAGES } from "../../../utils";
-import DatePicker from '../../../components/Input/DatePicker';
 import { toast } from "react-toastify";
 import _ from "lodash";
 import { manageMedicine } from '../../../services/userService';
-import { event } from "jquery";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
 ReactHTMLTableToExcel.format = (s, c) => {

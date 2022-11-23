@@ -32,7 +32,11 @@ class OutStandingDoctor extends Component {
         }
 
     }
-
+    AllDoctor = async () => {
+        if (this.props.history) {
+            this.props.history.push(`/doctorAll`)
+        }
+    }
     render() {
         let arrDoctors = this.state.arrDoctors;
         let { language } = this.props;
@@ -44,7 +48,8 @@ class OutStandingDoctor extends Component {
                         <span className='title-section'>
                             <FormattedMessage id="homepage.outstanding-doctor" />
                         </span>
-                        <button className='btn-section'>
+                        <button className='btn-section'
+                            onClick={() => this.AllDoctor()}>
                             <FormattedMessage id="homepage.more-infor" />
                         </button>
                     </div>
