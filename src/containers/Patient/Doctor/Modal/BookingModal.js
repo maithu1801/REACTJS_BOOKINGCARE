@@ -128,9 +128,7 @@ class BookingModal extends Component {
         let date = new Date(this.state.birthday).getTime();
         let timeString = this.buildTimeBooking(this.props.dataTime);
         let doctorName = this.buildDoctorName(this.props.dataTime);
-        console.log("Data truoc khi gui di: ", this.state.timeType);
-        // có gửi đi mà, lúc nãy kiếm tra k có em có chụp gửi đó
-        // mà vẫn chưa gửi đi đc 
+
         let res = await postPatientBookingAppointment({
             fullName: this.state.fullName,
             phoneNumber: this.state.phoneNumber,
@@ -147,7 +145,7 @@ class BookingModal extends Component {
             doctorName: doctorName
         })
         console.log('check res: ', res);
-        // k tim thay doctorId vaf timeType gui di
+
         if (res && res.errCode === 0) {
             toast.success('Booking a new appointment success!')
             this.props.closeBookingClose();

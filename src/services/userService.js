@@ -101,6 +101,17 @@ const manageMedicine = (data) => {
 const getDoctor = () => {
     return axios.get(`/api/get-doctor`)
 }
+const postSendEmail = (data) => {
+    console.log('gui di', data);
+    return axios.post('/api/send-email-login', data);
+}
+const postVerifyChangeLogin = (data) => {
+    return axios.post(`/api/verify-change-login`, data)
+}
+const editUserPassword = (inputData) => {
+    console.log('gui di data', inputData);
+    return axios.post('/api/edit-user-change', inputData)
+}
 export {
     handleLoginApi,
     getAllUsers,
@@ -130,5 +141,8 @@ export {
     createHistory,
     searchPatient,
     manageMedicine,
-    getDoctor
+    getDoctor,
+    postSendEmail,
+    postVerifyChangeLogin,
+    editUserPassword
 }

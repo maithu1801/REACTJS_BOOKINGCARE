@@ -214,7 +214,7 @@ class ManagePatient extends Component {
             patientId: patientId
         }
         let res = await getListHistory(data);
-        console.log('Resss: ', res);
+
         if (_.isEmpty(res) || res.err) {
             toast.warning("Bệnh nhân chưa có lịch sử khám bệnh !");
         } else {

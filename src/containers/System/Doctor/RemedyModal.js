@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import './RemedyModal.scss';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import { toast } from 'react-toastify';
-import moment from 'moment';
 import { CommonUtils } from '../../../utils';
 import { createHistory } from '../../../services/userService';
-import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 
 class RemedyModal extends Component {

@@ -11,6 +11,7 @@ export const path = {
     SPECIALTY_ALL: '/specialty',
     CLINIC_ALL: '/clinic',
     DOCTOR_ALL: '/doctorAll',
+    VERIFY_EMAIL_CHANGE_LOGIN: '/verify-change-login',
 };
 
 export const LANGUAGES = {

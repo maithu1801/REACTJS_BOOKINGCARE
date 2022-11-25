@@ -20,7 +20,7 @@ class DoctorAll extends Component {
     async componentDidMount() {
         if (this.props.match && this.props.match.params) {
             let res = await getDoctor();
-            console.log('resss', res);
+
             if (res && res.errCode === 0) {
                 this.setState({
                     Alldoctor: true,
