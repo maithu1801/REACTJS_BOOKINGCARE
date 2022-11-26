@@ -31,11 +31,11 @@
     border: none;
     outline: none;
     background: transparent;
-    color: yellow;
+    color: rgb(239, 185, 6);
 
     &:hover {
         background-color: transparent !important;
-        color: orange !important;
+        color: rgb(195, 127, 0) !important;
     }
 }
 
@@ -48,26 +48,29 @@
 
     &:hover {
         background-color: transparent !important;
-        color: orange !important;
+        color: rgb(110, 2, 2) !important;
     }
 }
 
 .modal-user-container {
-    .modal-content {
-        .modal-header {
-            button {
-                background-color: transparent !important;
-                color: white;
-                border: none;
-                font-size: 27px;
-            }
-        }
+
+    .closes {
+        padding-left: 50px;
     }
 
     .modal-user-body {
         display: flex;
         gap: 15px;
         flex-wrap: wrap;
+
+        .preview-img-container {
+
+            .preview-image {
+                margin-left: 200px;
+                width: 100%;
+                height: 150px;
+            }
+        }
 
         .input-container {
             display: flex;
@@ -86,5 +89,19 @@
                 padding: 0 10px
             }
         }
+    }
+
+    .save {
+        margin-left: 610px;
+        margin-right: 10px;
+        color: white;
+    }
+
+    .px-6 {
+        color: white;
+        background-color: #5a6268;
+        border: 1px solid #373a3c;
+        border-radius: 3px;
+        padding: 4px;
     }
 }
