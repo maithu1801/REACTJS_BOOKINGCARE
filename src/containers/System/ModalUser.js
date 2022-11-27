@@ -146,7 +146,7 @@ class ModalUser extends Component {
         }
     }
     openPreviewImage = () => {
-        if (!this.state.previewImgURL) return;
+        if (!this.props.previewImgURL) return;
         this.setState({
             isOpen: true
         })

@@ -7,8 +7,9 @@ import './UserRedux.scss';
 import 'react-image-lightbox/style.css';
 import ModalUser from '../ModalUser';
 import ModalEditUser from "../ModalEditUser";
-import { getAllUsers } from '../../../services/userService';
-import TableManageUser from "./TableManageUser";
+import { editUserService, getAllUsers } from '../../../services/userService';
+
+
 
 class UserRedux extends Component {
 
@@ -33,6 +34,7 @@ class UserRedux extends Component {
             avatar: '',
             action: '',
             userEditId: '',
+            isOpenModalEditUser: false,
         }
     }
     async componentDidMount() {
@@ -40,6 +42,7 @@ class UserRedux extends Component {
         this.props.getPositionStart();
         this.props.getRoleStart();
         this.props.fetchUserRedux();
+        await this.getAllUsersFromReact();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -163,28 +166,6 @@ class UserRedux extends Component {
             ...copyState
         })
     }
-
-    handleEditUserFromParent = (user) => {
-        let imageBase64 = '';
-        if (user.image) {
-            imageBase64 = new Buffer(user.image, 'base64').toString('binary');
-        }
-        this.setState({
-            email: user.email,
-            password: 'HARDCODE',
-            firstName: user.firstName,
-            lastName: user.lastName,
-            phonenumber: user.phonenumber,
-            address: user.address,
-            gender: user.gender,
-            role: user.roleId,
-            position: user.positionId,
-            avatar: '',
-            previewImgURL: imageBase64,
-            action: CRUD_ACTIONS.EDIT,
-            userEditId: user.id
-        })
-    }
     toggleUserModal = () => {
         this.setState({
             isOpenModalUser: !this.state.isOpenModalUser,
@@ -201,22 +182,64 @@ class UserRedux extends Component {
         })
     }
     handleEditUser = (user) => {
-        console.log('check manage', user);
+        let imageBase64 = '';
+        if (user.image) {
+            imageBase64 = new Buffer(user.image, 'base64').toString('binary');
+        }
         this.setState({
+            email: user.email,
+            password: 'HARDCODE',
+            firstName: user.firstName,
+            lastName: user.lastName,
+            phonenumber: user.phonenumber,
+            address: user.address,
+            gender: user.gender,
+            role: user.roleId,
+            position: user.positionId,
+            avatar: user.image,
+            previewImgURL: imageBase64,
+            action: CRUD_ACTIONS.EDIT,
+            userEditId: user.id,
             isOpenModalEditUser: true,
             userEdit: user
         })
     }
-
+    doEditUser = async (user) => {
+        console.log('doEditUser', user);
+        try {
+            let res = await editUserService(user)
+            if (res && res.errCode === 0) {
+                this.setState({
+                    isOpenModalEditUser: false
+                })
+                await this.getAllUsersFromReact()
+            } else {
+                alert(res.errCode)
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    getAllUsersFromReact = async () => {
+        let response = await getAllUsers('ALL');
+        if (response && response.errCode === 0) {
+            this.setState({
+                arrUsers: response.users
+            })
+        }
+    }
+    handleDeleteUser = (user) => {
+        this.props.deleteUserRedux(user.id);
+    }
     render() {
         let arrUsers = this.props.listUsers;
-        console.log('arrUsers', arrUsers);
         return (
             <div className='user-redux-container'>
                 <ModalUser
                     isOpen={this.state.isOpenModalUser}
                     toggleFromPrarent={this.toggleUserModal}
                     createNewUser={this.createNewUser}
+
                 />
                 {
                     this.state.isOpenModalEditUser &&
@@ -225,6 +248,10 @@ class UserRedux extends Component {
                         toggleFromPrarent={this.toggleUserEditModal}
                         currentUser={this.state.userEdit}
                         editUser={this.doEditUser}
+                        genderArr={this.state.genderArr}
+                        positionArr={this.state.positionArr}
+                        roleArr={this.state.roleArr}
+                        previewImgURL={this.state.previewImgURL}
                     />
                 }
                 <div className='title'>
@@ -276,10 +303,6 @@ class UserRedux extends Component {
                             }
                         </tbody>
                     </table>
-                    {/* <TableManageUser
-                    // handleEditUserFromParent={this.handleEditUserFromParent}
-                    // action={this.state.action}
-                    /> */}
                 </div>
             </div>
         );
@@ -293,8 +316,6 @@ const mapStateToProps = state => {
         roleRedux: state.admin.roles,
         positionRedux: state.admin.positions,
         isLoadingGender: state.admin.isLoadingGender,
-        // users là lưu thông tin của thằng đang đfăng nhập mà, là
-        // anh nhìn nè, em lấy lại hàm cũ nó chayj ne
         listUsers: state.admin.users
     };
 }
@@ -306,7 +327,8 @@ const mapDispatchToProps = dispatch => {
         getRoleStart: () => dispatch(action.fetchRoleStart()),
         createNewUser: (data) => dispatch(action.createNewUser(data)),
         fetchUserRedux: () => dispatch(action.fetchAllUsersStart()),
-        editUserRedux: (data) => dispatch(action.editUser(data))
+        editUserRedux: (data) => dispatch(action.editUser(data)),
+        deleteUserRedux: (id) => dispatch(action.deleteUser(id))
     };
 };
 

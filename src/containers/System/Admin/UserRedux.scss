@@ -1,3 +1,55 @@
+.user-redux-container {
+    .title {}
+
+    .mx-1 {
+        margin-left: 40px !important;
+
+        .btn-primary {}
+
+    }
+
+    .user-redux-body {
+        #TableManageUser {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 95%;
+            margin: 40px;
+
+        }
+
+        #TableManageUser td,
+        #TableManageUser th {
+            // border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #TableManageUser tr:nth-child(even) {
+            background-color: #f2f2f2;
+
+        }
+
+        #TableManageUser tr:hover {
+            background-color: rgb(145, 168, 195);
+        }
+
+        #TableManageUser th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        .img-avt {
+            width: 300px;
+            height: 200px;
+
+        }
+
+    }
+}
+
+
 .preview-img-container {
     .label-upload {
         padding: 5px;
