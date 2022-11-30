@@ -39,7 +39,6 @@ class DoctorAll extends Component {
     render() {
         // bên react chạy đúng bên node nó gửi về bị trùng
         let { datadoctor } = this.state;
-        console.log('datadoctor render:', this.state.datadoctor);
         return (
             <div className='doctor-container'>
                 <HomeHeader />

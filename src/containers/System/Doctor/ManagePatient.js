@@ -69,15 +69,35 @@ class ManagePatient extends Component {
             medicine: [],
             use: [],
             nameUse: '',
-            htu: ''
+            htu: '',
+
+            number: 1,
+            mType: '',
+            total: 0,
+            price: 0,
+            rType: [],
+            rPrice: [],
+            rNumber: [],
+            infoDoctor: {}
         }
     }
 
 
     async componentDidMount() {
         this.getDataPatient()
-
-
+        let data = {
+            type: 'doctorPrice',
+            id: this.props.user.id
+        }
+        let res = await manageMedicine(data);
+        if (res.doctor) {
+            console.log(res);
+            this.setState({
+                infoDoctor: res.doctor
+            }, () => {
+                console.log("xxx", this.state.infoDoctor.Doctor_Infor.nameClinic)
+            })
+        }
     }
 
     getDataPatient = async () => {
@@ -321,22 +341,51 @@ class ManagePatient extends Component {
         }
     }
     howtouse = (item) => {
+        let type = '';
+        if (item.type === 'vien') {
+            type = 'Viên'
+        } else if (item.type === 'vi') {
+            type = 'Viên'
+        } else if (item.type === 'hop') {
+            type = 'Hộp/tuýp'
+        } else if (item.type === 'goi') {
+            type = 'Gói'
+        } else if (item.type === 'khac') {
+            type = 'Sản Phẩm'
+        }
         this.setState({
             howtouse: true,
-            nameUse: item.nameMedicine
+            nameUse: item.nameMedicine,
+            price: item.price,
+            mType: type
         })
     }
     medicineToRight = () => {
         let name = this.state.medicine;
         let use = this.state.use;
+        let rType = this.state.rType;
+        let rPrice = this.state.rPrice;
+        let rNumber = this.state.rNumber;
+        let total = +this.state.total;
         if (this.state.htu != '') {
             name.push(this.state.nameUse);
             use.push(this.state.htu);
+            rPrice.push(this.state.price);
+            rType.push(this.state.mType);
+            rNumber.push(this.state.number);
+            total = total + +this.state.number * +this.state.price;
             this.setState({
                 medicine: name,
                 use: use,
+                rPrice: rPrice,
+                rType: rType,
+                rNumber: rNumber,
+                total: total,
                 htu: '',
                 howtouse: false,
+                mType: '',
+                price: '',
+                number: 1,
             })
         } else {
             toast.warning("Vui lòng nhập cách dùng thuốc !");
@@ -345,12 +394,24 @@ class ManagePatient extends Component {
     deleteMedicine = (index) => {
         let name = this.state.medicine;
         let use = this.state.use;
+        let rType = this.state.rType;
+        let rPrice = this.state.rPrice;
+        let rNumber = this.state.rNumber;
+        let total = +this.state.total;
+        total = +total - +rNumber[index] * +rPrice[index];
         name.splice(index, 1);
         use.splice(index, 1);
-        console.log("name", name);
+        rNumber.splice(index, 1);
+        rType.splice(index, 1);
+        rPrice.splice(index, 1);
+
         this.setState({
             medicine: name,
             use: use,
+            rPrice: rPrice,
+            rType: rType,
+            rNumber: rNumber,
+            total: total
         })
     }
     render() {
@@ -379,12 +440,24 @@ class ManagePatient extends Component {
                                     ></i>
                                 </div>
                                 <div className="htu-body">
-                                    <b>Cách dùng:</b>
-                                    <textarea rows='4'
-                                        value={this.state.htu}
-                                        onChange={(event) => this.handleOnChangeInput(event, 'htu')}
-                                    >
-                                    </textarea>
+                                    <div className="htu-body-sub-number">
+                                        <b>Số lượng:</b>
+                                        <div className="number">
+                                            <input
+                                                value={this.state.number}
+                                                onChange={(event) => this.handleOnChangeInput(event, 'number')}
+                                            />
+                                            <span>{this.state.price} VNĐ/{this.state.mType}</span>
+                                        </div>
+                                    </div>
+                                    <div className="htu-body-sub">
+                                        <b>Cách dùng:</b>
+                                        <textarea rows='4'
+                                            value={this.state.htu}
+                                            onChange={(event) => this.handleOnChangeInput(event, 'htu')}
+                                        >
+                                        </textarea>
+                                    </div>
                                 </div>
                                 <div className="htu-footer">
                                     <div className="htu-btn"
@@ -442,13 +515,6 @@ class ManagePatient extends Component {
                                                 onChange={(event) => this.handleOnChangeInput(event, 'nameMedicine')}
                                             >
                                             </input>
-                                            {list && list.length === 0 &&
-                                                <div className="new">
-                                                    <i className="fas fa-plus"
-                                                        onClick={() => this.saveMedicine()}
-                                                    ></i>
-                                                </div>
-                                            }
                                         </div>
                                     </div>
                                     <div className='left-container'>
@@ -503,6 +569,22 @@ class ManagePatient extends Component {
                                         <b>Bác sĩ:</b>
                                         <span>{this.state.doctor}</span>
                                     </div>
+                                    {!_.isEmpty(this.state.infoDoctor) &&
+                                        <React.Fragment>
+                                            <div className="right-content">
+                                                <b>Phòng khám:</b>
+                                                <span>{this.state.infoDoctor.Doctor_Infor.nameClinic}</span>
+                                            </div>
+                                            <div className="right-content">
+                                                <b>Chuyên khoa:</b>
+                                                <span>{this.state.infoDoctor.Doctor_Infor.specialtyData.name}</span>
+                                            </div>
+                                            <div className="right-content">
+                                                <b>Giá Khám:</b>
+                                                <span>{this.state.infoDoctor.Doctor_Infor.priceTypeData.valueVi} VNĐ</span>
+                                            </div>
+                                        </React.Fragment>
+                                    }
                                     <div className="right-content">
                                         <b>Chuẩn đoán:</b>
                                         <div className="descreption">
@@ -513,8 +595,11 @@ class ManagePatient extends Component {
                                         <table>
                                             <tbody>
                                                 <tr>
-                                                    <td className="title max">Toa thuốc</td>
-                                                    <td className="title min">Cách dùng</td>
+                                                    <td className="title">Tên thuốc</td>
+                                                    <td className="title">Giá</td>
+                                                    <td className="title">SL</td>
+                                                    <td className="title">Thành tiền</td>
+                                                    <td className="title">Cách dùng</td>
                                                 </tr>
                                                 {!_.isEmpty(use) && !_.isEmpty(name) ?
                                                     <React.Fragment>
@@ -525,16 +610,24 @@ class ManagePatient extends Component {
                                                                         title='click to delete'
                                                                         onClick={() => this.deleteMedicine(index)}
                                                                     >
-                                                                        <td className="max">{name[index]}</td>
-                                                                        <td className="min">{use[index]}</td>
+                                                                        <td>{name[index]}</td>
+                                                                        <td>{this.state.rPrice[index]}VNĐ/{this.state.rType[index]}</td>
+                                                                        <td>{this.state.rNumber[index]}</td>
+                                                                        <td>{+this.state.rNumber[index] * +this.state.rPrice[index]} VNĐ</td>
+                                                                        <td>{use[index]}</td>
                                                                     </tr>
                                                                 )
                                                             })
                                                         }
+                                                        <tr>
+                                                            <td colSpan='5' className="right">Tổng tiền: {
+                                                                +this.state.total + +this.state.infoDoctor.Doctor_Infor.priceTypeData.valueVi
+                                                            } VNĐ</td>
+                                                        </tr>
                                                     </React.Fragment> :
                                                     < React.Fragment >
                                                         <tr>
-                                                            <td colSpan='4' className="center">Chưa cho thuốc</td>
+                                                            <td colSpan='5' className="center">Chưa cho thuốc</td>
                                                         </tr>
                                                     </React.Fragment>
                                                 }
@@ -737,6 +830,14 @@ class ManagePatient extends Component {
                                                                                 // onClick={() => this.handleBtnComfirm(item)}
                                                                                 onClick={() => this.showPlan(item)}
                                                                             >Xác nhận</button>
+                                                                            <button className="mp-btn-confirm"
+                                                                                // onClick={() => this.handleBtnComfirm(item)}
+                                                                                onClick={
+                                                                                    () => {
+                                                                                        window.open(`http://localhost:3000/verify-booking?token=${item.token}&doctorId=${item.doctorId}&type=DCANCEL`);
+                                                                                    }
+                                                                                }
+                                                                            >Hủy Lịch Khám</button>
                                                                         </React.Fragment> :
                                                                         <React.Fragment>
                                                                             Đã khám xong

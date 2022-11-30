@@ -110,8 +110,13 @@ const postVerifyChangeLogin = (data) => {
     return axios.post(`/api/verify-change-login`, data)
 }
 const editUserPassword = (inputData) => {
-    console.log('gui di data', inputData);
     return axios.post('/api/edit-user-change', inputData)
+}
+const getScheduleManage = (data) => {
+    return axios.post('/api/get-Schedule-Manage', data)
+}
+const listManage = (data) => {
+    return axios.post(`/api/list-manage`, data);
 }
 export {
     handleLoginApi,
@@ -145,5 +150,7 @@ export {
     getDoctor,
     postSendEmail,
     postVerifyChangeLogin,
-    editUserPassword
+    editUserPassword,
+    getScheduleManage,
+    listManage
 }

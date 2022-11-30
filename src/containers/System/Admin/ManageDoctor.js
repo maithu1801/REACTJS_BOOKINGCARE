@@ -8,8 +8,10 @@ import 'react-markdown-editor-lite/lib/index.css';
 import './ManageDoctor.scss';
 import Select from 'react-select';
 import { LANGUAGES, CRUD_ACTIONS } from "../../../utils";
-import { getDetailInforDoctor } from "../../../services/userService";
+import { getDetailInforDoctor, saveDetailDoctorService } from "../../../services/userService";
 import { FormattedMessage } from 'react-intl';
+import { toast } from 'react-toastify';
+import { event } from 'jquery';
 
 
 
@@ -22,7 +24,7 @@ class ManageDoctor extends Component {
             //save to Mardown table
             contentMarkdown: '',
             contentHTML: '',
-            selectedOption: '',
+            selectedOption: '', // id bac si
             description: '',
             listDoctors: '',
             hasOldData: false,
@@ -44,14 +46,21 @@ class ManageDoctor extends Component {
             addressClinic: '',
             note: '',
             clinicId: '',
-            specialtyId: ''
+            specialtyId: '',
 
+            edit: false,
+            allDoctors: [],
+            keyWord: '',
         }
     }
 
-    componentDidMount() {
-        this.props.fetchAllDoctors();
-        this.props.getAllRequiredDoctorInfor();
+    async componentDidMount() {
+        await this.props.fetchAllDoctors();
+        await this.props.getAllRequiredDoctorInfor();
+        console.log('this.props.allDoctors', this.props.allDoctors);
+        this.setState({
+            allDoctors: this.props.allDoctors
+        })
     }
 
     buildDataInputSelect = (inputData, type) => {
@@ -181,6 +190,7 @@ class ManageDoctor extends Component {
     }
 
     handleChangeSelect = async (selectedOption) => {
+        console.log("selectedOption", selectedOption);
         this.setState({ selectedOption });
         let { listPayment, listPrice, listProvince, listSpecialty, listClinic } = this.state;
 
@@ -272,6 +282,59 @@ class ManageDoctor extends Component {
             ...stateCopy
         })
     }
+    editDoctor = async (item) => {
+        this.setState({
+            edit: true
+        })
+        let data = {
+            label: `${item.lastName} ${item.firstName}`,
+            value: item.id
+        }
+        this.handleChangeSelect(data);
+    }
+    deleteDoctor = async (item) => {
+        let data = {
+            type: 'delete',
+            id: item.id
+        }
+        let res = await saveDetailDoctorService(data);
+        if (res.ok === 'OK') {
+            toast.success("Xóa bác sĩ thành công !")
+        } else {
+            toast.error("Đã xảy ra lỗi !")
+        }
+        await this.props.fetchAllDoctors();
+        this.setState({
+            allDoctors: this.props.allDoctors
+        })
+    }
+    handleOnChangeInput = (event, id) => {
+        let copyState = { ...this.state };
+        copyState[id] = event.target.value;
+        this.setState({
+            ...copyState
+        })
+    }
+    searchDoctor = async () => {
+        let data = {
+            type: 'search',
+            keyWord: this.state.keyWord
+        }
+        let res = await saveDetailDoctorService(data);
+        if (res.err) {
+            toast.error("Đã xảy ra lỗi !");
+        } else if (res.doctor) {
+            this.setState({
+                allDoctors: res.doctor
+            })
+        }
+    }
+    selectAllDoctor = async () => {
+        await this.props.fetchAllDoctors();
+        this.setState({
+            allDoctors: this.props.allDoctors
+        })
+    }
     render() {
         let { hasOldData } = this.state;
 
@@ -279,125 +342,200 @@ class ManageDoctor extends Component {
             <div className='manage-doctor-container'>
                 <div className='manage-doctor-title'>
                     <FormattedMessage id="admin.manage-doctor.title" />
-                </div>
-                <div className='more-infor'>
-                    <div className='content-left form-group'>
-                        <label><FormattedMessage id="admin.manage-doctor.select-doctor" /></label>
-                        <Select
-                            value={this.state.selectedOption}
-                            onChange={this.handleChangeSelect}
-                            options={this.state.listDoctors}
-                            placeholder={<FormattedMessage id="admin.manage-doctor.select-doctor" />}
-                        />
-                    </div>
-                    <div className='content-right'>
-                        <label><FormattedMessage id="admin.manage-doctor.intro" /></label>
-                        <textarea className='form-control' rows='4'
-                            onChange={(event) => this.handleOnChangeText(event, 'description')}
-                            value={this.state.description}
-                        >
-
-                        </textarea>
-                    </div>
-                </div>
-                <div className='more-infor-extra row'>
-                    <div className='col-4 form-group'>
-                        <label><FormattedMessage id="admin.manage-doctor.price" /></label>
-                        <Select
-                            options={this.state.listPrice}
-                            onChange={this.handleChangeSelectDoctorInfor}
-                            value={this.state.selectedPrice}
-                            placeholder={<FormattedMessage id="admin.manage-doctor.price" />}
-                            name="selectedPrice"
-                        />
-                    </div>
-                    <div className='col-4 from-group'>
-                        <label><FormattedMessage id="admin.manage-doctor.payment" /></label>
-                        <Select
-                            options={this.state.listPayment}
-                            onChange={this.handleChangeSelectDoctorInfor}
-                            value={this.state.selectedPayment}
-                            placeholder={<FormattedMessage id="admin.manage-doctor.payment" />}
-                            name="selectedPayment"
-                        />
-                    </div>
-                    <div className='col-4 from-group'>
-                        <label><FormattedMessage id="admin.manage-doctor.province" /></label>
-                        <Select
-                            options={this.state.listProvince}
-                            onChange={this.handleChangeSelectDoctorInfor}
-                            value={this.state.selectedProvince}
-                            placeholder={<FormattedMessage id="admin.manage-doctor.province" />}
-                            name="selectedProvince"
-                        />
-                    </div>
-                    <div className='col-4 form-group'>
-                        <label><FormattedMessage id="admin.manage-doctor.nameClinic" /></label>
-                        <input className='form-control'
-                            onChange={(event) => this.handleOnChangeText(event, 'nameClinic')}
-                            value={this.state.nameClinic}
-                        />
-                    </div>
-                    <div className='col-4 form-group'>
-                        <label><FormattedMessage id="admin.manage-doctor.addressClinic" /></label>
-                        <input className='form-control'
-                            onChange={(event) => this.handleOnChangeText(event, 'addressClinic')}
-                            value={this.state.addressClinic}
-
-                        />
-                    </div>
-                    <div className='col-4 form-group'>
-                        <label><FormattedMessage id="admin.manage-doctor.note" /></label>
-                        <input className='form-control'
-                            onChange={(event) => this.handleOnChangeText(event, 'note')}
-                            value={this.state.note}
-                        />
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-4 form-group'>
-                        <label><FormattedMessage id="admin.manage-doctor.specialty" /></label>
-                        <Select
-                            value={this.state.selectedSpecialty}
-                            options={this.state.listSpecialty}
-                            placeholder={<FormattedMessage id="admin.manage-doctor.specialty" />}
-                            onChange={this.handleChangeSelectDoctorInfor}
-                            name="selectedSpecialty"
-                        />
-                    </div>
-                    <div className='col-4 form-group'>
-                        <label><FormattedMessage id="admin.manage-doctor.select-clinic" /></label>
-                        <Select
-                            value={this.state.selectedClinic}
-                            options={this.state.listClinic}
-                            placeholder={<FormattedMessage id="admin.manage-doctor.select-clinic" />}
-                            onChange={this.handleChangeSelectDoctorInfor}
-                            name="selectedClinic"
-
-                        />
-                    </div>
-
-                </div>
-                <div className='manage-doctor-editor'>
-                    <MdEditor
-                        style={{ height: '300px' }}
-                        renderHTML={text => mdParser.render(text)}
-                        onChange={this.handleEditorChange}
-                        value={this.state.contentMarkdown}
-                    />
-                </div>
-
-
-
-                <button
-                    onClick={() => this.handleSaveContentMarkdown()}
-                    className={hasOldData === true ? 'save-content-doctor' : 'create-content-doctor'}>
-                    {hasOldData === true ?
-                        <span><FormattedMessage id="admin.manage-doctor.save" /></span>
-                        :
-                        <span><FormattedMessage id="admin.manage-doctor.add" /></span>
+                    {this.state.edit === true &&
+                        <div className='close-btn'>
+                            <i class="fas fa-times"
+                                onClick={() => {
+                                    this.setState({
+                                        edit: false
+                                    })
+                                }}></i>
+                        </div>
                     }
-                </button>
+                </div>
+                {this.state.edit === false ?
+                    <React.Fragment>
+                        <div className='search-doctor'>
+                            <input
+                                value={this.state.keyWord}
+                                onChange={(event) => this.handleOnChangeInput(event, 'keyWord')}
+                            >
+                            </input>
+                            <div className='search-doctor-btn'
+                                onClick={() => this.searchDoctor()}
+                            >
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div className='search-doctor-btn'
+                                onClick={() => this.selectAllDoctor()}
+                            >
+                                <i class="fas fa-undo"></i>
+                            </div>
+                        </div>
+                        <div className='table-doctor'>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td className='title center'>STT</td>
+                                        <td className='title'>Last Name</td>
+                                        <td className='title'>First Name</td>
+                                        <td className='title'>Email</td>
+                                        <td className='title'>Address</td>
+                                        <td className='title center'>Tool</td>
+                                    </tr>
+                                    {this.state.allDoctors.length > 0 ?
+                                        <React.Fragment>
+                                            {this.state.allDoctors.map((item, index) => {
+                                                return (
+                                                    <tr key={index}>
+                                                        <td className='center'>{index}</td>
+                                                        <td>{item.lastName}</td>
+                                                        <td>{item.firstName}</td>
+                                                        <td>{item.email}</td>
+                                                        <td>{item.address}</td>
+                                                        <td className='center'>
+                                                            <i class="fas fa-pencil-alt"
+                                                                onClick={() => this.editDoctor(item)}
+                                                            ></i>
+                                                            <i class="fas fa-trash-alt"
+                                                                onClick={() => this.deleteDoctor(item)}
+                                                            ></i>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })
+
+                                            }
+                                        </React.Fragment> :
+                                        <React.Fragment>
+                                            <tr>
+                                                <td colSpan={5} className='center'>Không tìm thấy dữ liệu trùng khớp</td>
+                                            </tr>
+                                        </React.Fragment>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </React.Fragment> :
+                    <React.Fragment>
+                        <div className='more-infor'>
+                            <div className='content-left form-group'>
+                                <label><FormattedMessage id="admin.manage-doctor.select-doctor" /></label>
+                                <Select
+                                    value={this.state.selectedOption}
+                                    onChange={this.handleChangeSelect}
+                                    options={this.state.listDoctors}
+                                    placeholder={<FormattedMessage id="admin.manage-doctor.select-doctor" />}
+                                />
+                            </div>
+                            <div className='content-right'>
+                                <label><FormattedMessage id="admin.manage-doctor.intro" /></label>
+                                <textarea className='form-control' rows='4'
+                                    onChange={(event) => this.handleOnChangeText(event, 'description')}
+                                    value={this.state.description}
+                                >
+
+                                </textarea>
+                            </div>
+                        </div>
+                        <div className='more-infor-extra row'>
+                            <div className='col-4 form-group'>
+                                <label><FormattedMessage id="admin.manage-doctor.price" /></label>
+                                <Select
+                                    options={this.state.listPrice}
+                                    onChange={this.handleChangeSelectDoctorInfor}
+                                    value={this.state.selectedPrice}
+                                    placeholder={<FormattedMessage id="admin.manage-doctor.price" />}
+                                    name="selectedPrice"
+                                />
+                            </div>
+                            <div className='col-4 from-group'>
+                                <label><FormattedMessage id="admin.manage-doctor.payment" /></label>
+                                <Select
+                                    options={this.state.listPayment}
+                                    onChange={this.handleChangeSelectDoctorInfor}
+                                    value={this.state.selectedPayment}
+                                    placeholder={<FormattedMessage id="admin.manage-doctor.payment" />}
+                                    name="selectedPayment"
+                                />
+                            </div>
+                            <div className='col-4 from-group'>
+                                <label><FormattedMessage id="admin.manage-doctor.province" /></label>
+                                <Select
+                                    options={this.state.listProvince}
+                                    onChange={this.handleChangeSelectDoctorInfor}
+                                    value={this.state.selectedProvince}
+                                    placeholder={<FormattedMessage id="admin.manage-doctor.province" />}
+                                    name="selectedProvince"
+                                />
+                            </div>
+                            <div className='col-4 form-group'>
+                                <label><FormattedMessage id="admin.manage-doctor.nameClinic" /></label>
+                                <input className='form-control'
+                                    onChange={(event) => this.handleOnChangeText(event, 'nameClinic')}
+                                    value={this.state.nameClinic}
+                                />
+                            </div>
+                            <div className='col-4 form-group'>
+                                <label><FormattedMessage id="admin.manage-doctor.addressClinic" /></label>
+                                <input className='form-control'
+                                    onChange={(event) => this.handleOnChangeText(event, 'addressClinic')}
+                                    value={this.state.addressClinic}
+
+                                />
+                            </div>
+                            <div className='col-4 form-group'>
+                                <label><FormattedMessage id="admin.manage-doctor.note" /></label>
+                                <input className='form-control'
+                                    onChange={(event) => this.handleOnChangeText(event, 'note')}
+                                    value={this.state.note}
+                                />
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-4 form-group'>
+                                <label><FormattedMessage id="admin.manage-doctor.specialty" /></label>
+                                <Select
+                                    value={this.state.selectedSpecialty}
+                                    options={this.state.listSpecialty}
+                                    placeholder={<FormattedMessage id="admin.manage-doctor.specialty" />}
+                                    onChange={this.handleChangeSelectDoctorInfor}
+                                    name="selectedSpecialty"
+                                />
+                            </div>
+                            <div className='col-4 form-group'>
+                                <label><FormattedMessage id="admin.manage-doctor.select-clinic" /></label>
+                                <Select
+                                    value={this.state.selectedClinic}
+                                    options={this.state.listClinic}
+                                    placeholder={<FormattedMessage id="admin.manage-doctor.select-clinic" />}
+                                    onChange={this.handleChangeSelectDoctorInfor}
+                                    name="selectedClinic"
+
+                                />
+                            </div>
+
+                        </div>
+                        <div className='manage-doctor-editor'>
+                            <MdEditor
+                                style={{ height: '300px' }}
+                                renderHTML={text => mdParser.render(text)}
+                                onChange={this.handleEditorChange}
+                                value={this.state.contentMarkdown}
+                            />
+                        </div>
+                        <button
+                            onClick={() => this.handleSaveContentMarkdown()}
+                            className={hasOldData === true ? 'save-content-doctor' : 'create-content-doctor'}>
+                            {hasOldData === true ?
+                                <span><FormattedMessage id="admin.manage-doctor.save" /></span>
+                                :
+                                <span><FormattedMessage id="admin.manage-doctor.add" /></span>
+                            }
+                        </button>
+                    </React.Fragment>
+                }
+
             </div>
         );
 
@@ -411,7 +549,6 @@ const mapStateToProps = state => {
         language: state.app.language,
         allDoctors: state.admin.allDoctors,
         allRequiredDoctorInfor: state.admin.allRequiredDoctorInfor,
-
     };
 };
 

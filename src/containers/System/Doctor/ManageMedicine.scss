@@ -60,6 +60,12 @@
 
 
             .input {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 20px;
+
                 input {
                     outline: none;
                     border: 1px solid rgba(0, 0, 0, 0.527);
@@ -67,6 +73,20 @@
                     font-size: 16px;
                     border-radius: 10px;
                     min-width: 400px;
+
+                    &.price-input {
+                        min-width: 100px;
+                        width: 200px;
+                    }
+                }
+
+                select {
+                    outline: none;
+                    border: 1px solid rgba(0, 0, 0, 0.527);
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    border-radius: 10px;
+                    width: 200px;
                 }
             }
 

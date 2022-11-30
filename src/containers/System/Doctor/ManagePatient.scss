@@ -407,7 +407,7 @@ div._loading_overlay_wrapper {
                     }
 
                     input {
-                        width: 95%;
+                        width: 100%;
                         padding: 10px;
                         outline: none;
                         border: 1px solid rgba(0, 0, 0, 0.632);
@@ -566,6 +566,15 @@ div._loading_overlay_wrapper {
                                 &.min {
                                     width: 40%;
                                 }
+
+                                &.center {
+                                    text-align: center;
+                                }
+
+                                &.right {
+                                    padding-right: 50px;
+                                    text-align: right;
+                                }
                             }
                         }
 
@@ -625,21 +634,68 @@ div._loading_overlay_wrapper {
         .htu-body {
             width: 100%;
             display: flex;
-            margin-top: 10px;
-            flex-direction: row;
+            flex-direction: column;
+            justify-content: flex-start;
             align-items: flex-start;
-            justify-content: space-between;
+            gap: 10px;
 
-            b {
-                width: 20%;
+            .htu-body-sub {
+                width: 100%;
+                display: flex;
+                margin-top: 10px;
+                flex-direction: row;
+                align-items: flex-start;
+                justify-content: space-between;
+
+                b {
+                    width: 20%;
+                }
+
+                .number {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    gap: 10px;
+                }
+
+                textarea {
+                    width: 80%;
+                    border: 1px solid rgba(0, 0, 0, 0.632);
+                    outline: none;
+                    border-radius: 10px;
+                    padding: 10px;
+                }
             }
 
-            textarea {
-                width: 80%;
-                border: 1px solid rgba(0, 0, 0, 0.632);
-                outline: none;
-                border-radius: 10px;
-                padding: 10px;
+            .htu-body-sub-number {
+                width: 100%;
+                display: flex;
+                margin-top: 10px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+
+                b {
+                    width: 20%;
+                }
+
+                .number {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    gap: 10px;
+                    width: 80%;
+
+                    input {
+                        width: 60%;
+                        outline: none;
+                        padding: 10px 20px;
+                        border-radius: 10px;
+                    }
+                }
             }
         }
 

@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import _ from "lodash";
 import { manageMedicine } from '../../../services/userService';
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
+import { event } from "jquery";
 
 ReactHTMLTableToExcel.format = (s, c) => {
     if (c && c['table']) {
@@ -30,6 +31,8 @@ class ManageSchedule extends Component {
             nameMedicine: '',
             edit: false,
             id: '',
+            price: '',
+            mType: 'hop'
         }
     }
 
@@ -76,8 +79,10 @@ class ManageSchedule extends Component {
     editMedicine = async (item) => {
         this.setState({
             nameMedicine: item.nameMedicine,
+            mType: item.type,
+            price: item.price,
             edit: true,
-            id: item.id
+            id: item.id,
         });
     }
     handleOnChangeInput = (event, id) => {
@@ -93,6 +98,8 @@ class ManageSchedule extends Component {
             let data = {
                 type: 'update',
                 nameMedicine: this.state.nameMedicine,
+                price: this.state.price,
+                mType: this.state.mType,
                 id: this.state.id,
             };
             let res = await manageMedicine(data);
@@ -102,6 +109,8 @@ class ManageSchedule extends Component {
                 this.setState({
                     nameMedicine: '',
                     edit: false,
+                    price: '',
+                    mType: 'hop'
                 });
             } else {
                 toast.error("Đã xảy ra lỗi");
@@ -110,6 +119,8 @@ class ManageSchedule extends Component {
             if (this.state.nameMedicine !== '') {
                 let data = {
                     type: 'new',
+                    price: this.state.price,
+                    mType: this.state.mType,
                     nameMedicine: this.state.nameMedicine,
                     doctorId: this.props.user.id,
                 };
@@ -120,6 +131,8 @@ class ManageSchedule extends Component {
                     this.setState({
                         nameMedicine: '',
                         edit: false,
+                        price: '',
+                        mType: 'hop'
                     });
                 } else {
                     toast.error("Đã xảy ra lỗi");
@@ -137,6 +150,7 @@ class ManageSchedule extends Component {
             let data = {
                 type: 'search',
                 doctorId: this.props.user.id,
+                mType: this.state.mType,
                 nameMedicine: this.state.nameMedicine,
             }
             let res = await manageMedicine(data);
@@ -168,6 +182,23 @@ class ManageSchedule extends Component {
                                     onChange={(event) => this.handleOnChangeInput(event, 'nameMedicine')}
                                 >
                                 </input>
+                                <input placeholder="Nhập giá thuốc"
+                                    value={this.state.price}
+                                    type='number'
+                                    onChange={(event) => this.handleOnChangeInput(event, 'price')}
+                                    className='price-input'
+                                >
+                                </input>
+                                <select
+                                    value={this.state.mType}
+                                    onChange={(event) => this.handleOnChangeInput(event, 'mType')}
+                                >
+                                    <option value='vien'>Viên</option>
+                                    <option value='vi'>Vỉ</option>
+                                    <option value='hop'>Hộp/tuýp</option>
+                                    <option value='goi'>Gói</option>
+                                    <option value='khac'>Khác</option>
+                                </select>
                             </div>
                             {this.state.edit === true ?
                                 <React.Fragment>
@@ -180,6 +211,8 @@ class ManageSchedule extends Component {
                                         onClick={() => this.setState({
                                             nameMedicine: '',
                                             edit: false,
+                                            mType: 'hop',
+                                            price: '',
                                             id: '',
                                         })}
                                     >
@@ -201,6 +234,8 @@ class ManageSchedule extends Component {
                                         onClick={() => {
                                             this.setState({
                                                 nameMedicine: '',
+                                                mType: 'hop',
+                                                price: '',
                                                 edit: false,
                                                 id: '',
                                             });
@@ -236,6 +271,8 @@ class ManageSchedule extends Component {
                                     <td className="title">Ngày thêm</td>
                                     <td className="title">Lần chỉnh sửa cuối</td>
                                     <td className="title">Tên thuốc</td>
+                                    <td className="title center">Đơn vị</td>
+                                    <td className="title center">Giá</td>
                                     <td className="title center">Thao tác</td>
                                 </tr>
                                 {list && list.length > 0 ?
@@ -263,6 +300,22 @@ class ManageSchedule extends Component {
                                                 <td>{ctime_vi}</td>
                                                 <td>{utime_vi}</td>
                                                 <td>{item.nameMedicine}</td>
+                                                {item.type === 'vien' &&
+                                                    <td className="center">Viên</td>
+                                                }
+                                                {item.type === 'vi' &&
+                                                    <td className="center">Vỉ</td>
+                                                }
+                                                {item.type === 'hop' &&
+                                                    <td className="center">Hộp/tuýp</td>
+                                                }
+                                                {item.type === 'khac' &&
+                                                    <td className="center">Khác</td>
+                                                }
+                                                {item.type === 'goi' &&
+                                                    <td className="center">Gói</td>
+                                                }
+                                                <td className="center">{item.price} VNĐ</td>
                                                 <td className="center">
                                                     <i className="fas fa-pencil-alt"
                                                         onClick={() => this.editMedicine(item)}

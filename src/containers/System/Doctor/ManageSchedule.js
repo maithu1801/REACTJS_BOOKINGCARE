@@ -8,7 +8,7 @@ import { LANGUAGES } from "../../../utils";
 import DatePicker from '../../../components/Input/DatePicker';
 import { toast } from "react-toastify";
 import _ from "lodash";
-import { saveBulkScheduleDoctor } from '../../../services/userService';
+import { saveBulkScheduleDoctor, getScheduleDoctorByDate } from '../../../services/userService';
 
 
 
@@ -20,7 +20,7 @@ class ManageSchedule extends Component {
             selectedDoctor: {},
             currentDate: '',
             rangeTime: [],
-
+            schedule: [],
         }
     }
 
@@ -38,7 +38,6 @@ class ManageSchedule extends Component {
         }
         if (prevProps.allScheduleTime !== this.props.allScheduleTime) {
             let data = this.props.allScheduleTime;
-            console.log('data time:', data);
             if (data && data.length > 0) {
                 data = data.map(item => ({ ...item, isSelected: false }))
             }
@@ -46,7 +45,6 @@ class ManageSchedule extends Component {
                 rangeTime: data
             })
         }
-        console.log('componentDidUpdate:', this.state.rangeTime);
 
     }
     buildDataInputSelect = (inputData) => {
@@ -66,12 +64,18 @@ class ManageSchedule extends Component {
     }
 
     handleChangeSelect = async (selectedOption) => {
-        this.setState({ selectedDoctor: selectedOption });
+        this.setState({
+            selectedDoctor: selectedOption,
+        }, async () => {
+            await this.getScheduleManage();
+        });
     }
 
     handleOnChangeDatePicker = (date) => {
         this.setState({
-            currentDate: date[0]
+            currentDate: date[0],
+        }, async () => {
+            await this.getScheduleManage();
         })
     }
     handleClickBtnTime = (time) => {
@@ -126,18 +130,65 @@ class ManageSchedule extends Component {
         })
         if (res && res.errCode === 0) {
             toast.success("Save Infor succed!");
+            this.getScheduleManage();
         } else {
             toast.error("error saveBulkScheduleDoctor");
             console.log('error saveBulkScheduleDoctor >>> res: ', res);
         }
     }
 
+    getScheduleManage = async () => {
+        let selectedDoctor = this.state.selectedDoctor;
+        let currentDate = this.state.currentDate;
+        if (selectedDoctor && currentDate) {
+            let date = new Date(currentDate);
+            currentDate = date.getTime();
+            let res = await getScheduleDoctorByDate(selectedDoctor.value, currentDate);
+            if (res.data.length > 0 && res.errCode === 0) {
+                this.setState({
+                    allAvalableTime: res.data ? res.data : []
+                })
+                let rangeTime = this.state.rangeTime;
+                res.data.map(res => {
+                    console.log("res map", res);
+                    if (rangeTime && rangeTime.length > 0) {
+                        rangeTime = rangeTime.map(item => {
+                            if (res.timeType === item.keyMap) {
+                                item.isSelected = true;
+                            }
+                            return item;
+                        })
+                        this.setState({
+                            rangeTime: rangeTime
+                        })
+                    }
+                })
+            } else {
+                let rangeTime = this.state.rangeTime;
+                if (rangeTime && rangeTime.length > 0) {
+                    rangeTime = rangeTime.map(item => {
+                        item.isSelected = false;
+                        return item;
+                    })
+                    this.setState({
+                        rangeTime: rangeTime,
+                        allAvalableTime: []
+                    })
+                }
+            }
+        }
+    }
 
     render() {
         let { rangeTime } = this.state;
         let { language } = this.props;
         let yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
-
+        let allAvalableTime = this.state.allAvalableTime;
+        let selectedDoctor = this.state.selectedDoctor;
+        if (this.props.user.roleId === 'R2') {
+            selectedDoctor.label = `${this.props.user.lastName} ${this.props.user.firstName}`;
+            selectedDoctor.value = this.props.user.id;
+        }
         return (
             <div className='manage-schedule-container'>
                 <div className='m-s-title'>
@@ -146,12 +197,23 @@ class ManageSchedule extends Component {
                 <div className='container'>
                     <div className='row'>
                         <div className="col-6 from-group">
-                            <label><FormattedMessage id="manage-schedule.choose-doctor" /></label>
-                            <Select
-                                value={this.state.selectedDoctor}
-                                onChange={this.handleChangeSelect}
-                                options={this.state.listDoctors}
-                            />
+                            {this.props.user.roleId === 'R1' ?
+                                <React.Fragment>
+                                    <label><FormattedMessage id="manage-schedule.choose-doctor" /></label>
+                                    <Select
+                                        value={this.state.selectedDoctor}
+                                        onChange={this.handleChangeSelect}
+                                        options={this.state.listDoctors}
+                                    />
+                                </React.Fragment> :
+                                <React.Fragment>
+                                    <label><FormattedMessage id="manage-schedule.choose-doctor" /></label>
+                                    <Select
+                                        value={this.state.selectedDoctor}
+                                        disabled
+                                    />
+                                </React.Fragment>
+                            }
                         </div>
                         <div className="col-6 from-group">
                             <div>
@@ -163,7 +225,6 @@ class ManageSchedule extends Component {
                                 value={this.state.currentDate}
                                 minDate={yesterday}
                             />
-
                         </div>
                         <div className="col-12 pick-hour-container">
                             {rangeTime && rangeTime.length > 0 &&
@@ -189,6 +250,35 @@ class ManageSchedule extends Component {
                         </div>
                     </div>
                 </div>
+                <div className="table-schedule">
+                    <div className="time-title">
+                        KẾ HOẠCH ĐÃ LƯU TRƯỚC ĐÓ
+                    </div>
+                    <div className='time-content'>
+                        {allAvalableTime && allAvalableTime.length > 0 ?
+                            <>
+                                <div className='time-content-btns'>
+                                    {allAvalableTime.map((item, index) => {
+                                        let timeDisplay = language === LANGUAGES.VI ?
+                                            item.timeTypeData.valueVi : item.timeTypeData.valueEn;
+                                        return (
+                                            <button key={index}
+                                                className={language === LANGUAGES.VI ? 'btn-vie' : 'btn-en'}
+                                            >
+                                                {timeDisplay}
+                                            </button>
+                                        )
+                                    })
+                                    }
+                                </div>
+                            </>
+                            :
+                            <div className='no-schedule'>
+                                Kế hoạch rỗng !!!
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         );
     }
@@ -201,6 +291,7 @@ const mapStateToProps = state => {
         language: state.app.language,
         allDoctors: state.admin.allDoctors,
         allScheduleTime: state.admin.allScheduleTime,
+        user: state.user.userInfo,
     };
 };
 

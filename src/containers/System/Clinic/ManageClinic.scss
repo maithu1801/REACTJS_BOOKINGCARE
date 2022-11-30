@@ -9,6 +9,16 @@
         font-weight: 600;
     }
 
+    .close-btn {
+        position: absolute;
+        z-index: 2;
+        top: 55px;
+        right: 30px;
+        cursor: pointer;
+        color: red;
+        font-size: 20px;
+    }
+
     .add-new-specialty {
         .btn-save-specialty {
             border: none;
@@ -17,6 +27,88 @@
             min-width: 75px;
             border-radius: 3px;
             margin: 15px 0;
+        }
+    }
+
+}
+
+.search-list {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 40px;
+    margin-top: 30px;
+
+    input {
+        padding: 10px 20px;
+        outline: none;
+        border-radius: 10px;
+        width: 300px;
+    }
+
+    .search-list-btn {
+        padding: 8px 20px;
+        background-color: blue;
+        color: white;
+        font-size: 20px;
+        border-radius: 10px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: green;
+        }
+    }
+}
+
+.table-list {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 100px;
+
+    table {
+        width: 100%;
+
+        tbody {
+            tr {
+                td {
+                    padding: 10px;
+                    max-width: 400px;
+
+                    img {
+                        width: 60px;
+                        height: 60px;
+                    }
+
+                    &.title {
+                        font-weight: bold;
+                        font-size: 17px;
+                        text-align: left;
+
+                        &.center {
+                            text-align: center;
+                        }
+                    }
+
+                    &.center {
+                        text-align: center;
+
+                        i {
+                            padding: 0px 10px;
+                            cursor: pointer;
+
+                            &:hover {
+                                color: red;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
