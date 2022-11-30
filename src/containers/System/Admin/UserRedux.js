@@ -278,7 +278,6 @@ class UserRedux extends Component {
                                     let imageBase64 = '';
                                     if (item.image) {
                                         imageBase64 = new Buffer(item.image, 'base64').toString('binary');
-
                                     }
                                     return (
                                         <tr key={index} >

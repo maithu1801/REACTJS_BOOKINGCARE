@@ -99,7 +99,7 @@
     },
     "admin": {
         "manage-doctor": {
-            "title": "Create more doctor information",
+            "title": "Manage doctor information",
             "select-doctor": "Choose doctor",
             "intro": "Introduction information",
             "add": "Create information",

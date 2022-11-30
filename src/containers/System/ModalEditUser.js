@@ -7,7 +7,7 @@ import { LANGUAGES, CRUD_ACTIONS, CommonUtils } from "../../utils";
 import * as action from "../../store/actions";
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
-
+import './ModalEditUser.scss';
 
 class ModalEditUser extends Component {
 
@@ -47,6 +47,7 @@ class ModalEditUser extends Component {
                 position: user.positionId,
                 role: user.roleId,
                 avatar: user.image,
+                previewImgURL: this.props.previewImgURL
             })
         }
     }
@@ -105,26 +106,12 @@ class ModalEditUser extends Component {
             })
         }
     }
-    openPreviewImage = () => {
-        console.log('onclick....');
-        if (!this.props.previewImgURL) return;
-        this.setState({
-            isOpen: true
-        })
-    }
-    // imagefullscreen = (link) => {
-    //     this.setState({
-    //         imagefullscreen: link,
-    //         isOpen: true,
-    //     })
-    // }
     render() {
         let genders = this.props.genderArr;
         let roles = this.props.roleArr;
         let positions = this.props.positionArr;
         let language = this.props.language;
         let isGetGenders = this.props.isLoadingGender;
-        let previewImgURL = this.props.previewImgURL;
         let { email, password, firstName, lastName,
             phonenumber, address, role, gender, position } = this.state;
 
@@ -148,8 +135,7 @@ class ModalEditUser extends Component {
                                     <label className='label-upload' htmlFor="previewImg">Tải ảnh<i className='fas fa-upload'></i></label>
 
                                     <div className='preview-image'
-                                        style={{ backgroundImage: `url(${this.props.previewImgURL})` }}
-                                        onClick={() => this.openPreviewImage()}
+                                        style={{ backgroundImage: `url(${this.state.previewImgURL})` }}
                                     >
                                     </div>
                                 </div>
@@ -266,14 +252,7 @@ class ModalEditUser extends Component {
                             onClick={() => { this.toggle() }}
                         >Close</Button>
                     </ModalFooter>
-
                 </Modal>
-                {this.state.isOpen === true &&
-                    <Lightbox
-                        mainSrc={this.state.openPreviewImage}
-                        onCloseRequest={() => this.setState({ isOpen: false })}
-                    />
-                }
             </>
         )
     }
