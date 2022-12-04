@@ -7,7 +7,7 @@ import MdEditor from 'react-markdown-editor-lite';
 import { CommonUtils } from '../../../utils';
 import { createNewSpecialty, listManage } from '../../../services/userService';
 import { toast } from "react-toastify";
-
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
 
 const mdParser = new MarkdownIt();
@@ -163,6 +163,7 @@ class ManageSpecialty extends Component {
                     <React.Fragment>
                         <div className='search-list'>
                             <input
+                                placeholder="Tìm kiếm chuyên khoa"
                                 value={this.state.keyWord}
                                 onChange={(event) => this.handleOnChangeInput(event, 'keyWord')}
                             >
@@ -181,6 +182,20 @@ class ManageSpecialty extends Component {
                                 onClick={() => this.newInfo()}
                             >
                                 <i class="fas fa-plus"></i>
+                            </div>
+                            <div className="btn-excel">
+                                <ReactHTMLTableToExcel
+                                    id="test-table-xls-button"
+                                    className="download-table-xls-button"
+                                    table="table-excel"
+                                    filename="chuyenkhoa"
+                                    sheet="tatcachuyenkhoa"
+                                    buttonText=""
+                                >
+                                </ReactHTMLTableToExcel>
+                                <div className="excel-icon">
+                                    <i class="fas fa-file-excel"></i>
+                                </div>
                             </div>
                         </div>
                         <div className='table-list'>
@@ -210,6 +225,37 @@ class ManageSpecialty extends Component {
                                                                 onClick={() => this.deleteInfo(item)}
                                                             ></i>
                                                         </td>
+                                                    </tr>
+                                                )
+                                            })
+                                            }
+                                        </React.Fragment> :
+                                        <React.Fragment>
+                                            <tr>
+                                                <td colSpan={5} className='center'>Không tìm thấy dữ liệu trùng khớp</td>
+                                            </tr>
+                                        </React.Fragment>
+                                    }
+                                </tbody>
+                            </table>
+                            {/* bang này xuất file excel */}
+                            <table id="table-excel">
+                                <tbody>
+                                    <tr>
+                                        <td className='title center'>STT</td>
+                                        <td className='title'>Tên</td>
+
+                                    </tr>
+                                    {this.state.listInfo && this.state.listInfo.length > 0 ?
+                                        <React.Fragment>
+                                            {this.state.listInfo.map((item, index) => {
+                                                let imageBase64 = new Buffer(item.image, 'base64').toString('binary');
+                                                item.imageBase64 = imageBase64;
+                                                return (
+                                                    <tr key={index}>
+                                                        <td className='center'>{index}</td>
+                                                        <td >{item.name}</td>
+
                                                     </tr>
                                                 )
                                             })

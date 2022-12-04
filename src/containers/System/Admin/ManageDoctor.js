@@ -11,7 +11,7 @@ import { LANGUAGES, CRUD_ACTIONS } from "../../../utils";
 import { getDetailInforDoctor, saveDetailDoctorService } from "../../../services/userService";
 import { FormattedMessage } from 'react-intl';
 import { toast } from 'react-toastify';
-import { event } from 'jquery';
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
 
 
@@ -57,7 +57,6 @@ class ManageDoctor extends Component {
     async componentDidMount() {
         await this.props.fetchAllDoctors();
         await this.props.getAllRequiredDoctorInfor();
-        console.log('this.props.allDoctors', this.props.allDoctors);
         this.setState({
             allDoctors: this.props.allDoctors
         })
@@ -357,6 +356,7 @@ class ManageDoctor extends Component {
                     <React.Fragment>
                         <div className='search-doctor'>
                             <input
+                                placeholder="Tìm kiếm bác sĩ"
                                 value={this.state.keyWord}
                                 onChange={(event) => this.handleOnChangeInput(event, 'keyWord')}
                             >
@@ -371,17 +371,31 @@ class ManageDoctor extends Component {
                             >
                                 <i class="fas fa-undo"></i>
                             </div>
+                            <div className="btn-excel">
+                                <ReactHTMLTableToExcel
+                                    id="test-table-xls-button"
+                                    className="download-table-xls-button"
+                                    table="table-excel"
+                                    filename="Bacsi"
+                                    sheet="Tatcabacsi"
+                                    buttonText=""
+                                >
+                                </ReactHTMLTableToExcel>
+                                <div className="excel-icon">
+                                    <i class="fas fa-file-excel"></i>
+                                </div>
+                            </div>
                         </div>
                         <div className='table-doctor'>
-                            <table>
+                            <table id="TableManageUser">
                                 <tbody>
                                     <tr>
-                                        <td className='title center'>STT</td>
-                                        <td className='title'>Last Name</td>
-                                        <td className='title'>First Name</td>
-                                        <td className='title'>Email</td>
-                                        <td className='title'>Address</td>
-                                        <td className='title center'>Tool</td>
+                                        <th className='title center'>STT</th>
+                                        <th className='title'>Last Name</th>
+                                        <th className='title'>First Name</th>
+                                        <th className='title'>Email</th>
+                                        <th className='title'>Address</th>
+                                        <th className='title center'>Tool</th>
                                     </tr>
                                     {this.state.allDoctors.length > 0 ?
                                         <React.Fragment>
@@ -393,14 +407,53 @@ class ManageDoctor extends Component {
                                                         <td>{item.firstName}</td>
                                                         <td>{item.email}</td>
                                                         <td>{item.address}</td>
-                                                        <td className='center'>
-                                                            <i class="fas fa-pencil-alt"
-                                                                onClick={() => this.editDoctor(item)}
-                                                            ></i>
-                                                            <i class="fas fa-trash-alt"
-                                                                onClick={() => this.deleteDoctor(item)}
-                                                            ></i>
+                                                        <td >
+                                                            <button className='btn-edit'>
+                                                                <i className="fas fa-pencil-alt"
+                                                                    onClick={() => this.editDoctor(item)}
+                                                                ></i>
+                                                            </button>
+                                                            <button className="btn-delete">
+                                                                <i className="fas fa-trash-alt"
+                                                                    onClick={() => this.deleteDoctor(item)}
+                                                                ></i>
+                                                            </button>
                                                         </td>
+                                                    </tr>
+                                                )
+                                            })
+
+                                            }
+                                        </React.Fragment> :
+                                        <React.Fragment>
+                                            <tr>
+                                                <td colSpan={5} className='center'>Không tìm thấy dữ liệu trùng khớp</td>
+                                            </tr>
+                                        </React.Fragment>
+                                    }
+                                </tbody>
+                            </table>
+
+                            {/* bang này xuất file excel */}
+                            <table id="table-excel">
+                                <tbody>
+                                    <tr>
+                                        <th className='title center'>STT</th>
+                                        <th className='title'>Last Name</th>
+                                        <th className='title'>First Name</th>
+                                        <th className='title'>Email</th>
+                                        <th className='title'>Address</th>
+                                    </tr>
+                                    {this.state.allDoctors.length > 0 ?
+                                        <React.Fragment>
+                                            {this.state.allDoctors.map((item, index) => {
+                                                return (
+                                                    <tr key={index}>
+                                                        <td className='center'>{index}</td>
+                                                        <td>{item.lastName}</td>
+                                                        <td>{item.firstName}</td>
+                                                        <td>{item.email}</td>
+                                                        <td>{item.address}</td>
                                                     </tr>
                                                 )
                                             })

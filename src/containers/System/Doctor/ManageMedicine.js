@@ -335,6 +335,7 @@ class ManageSchedule extends Component {
                                 }
                             </tbody>
                         </table>
+                        {/* bang nay xuất file excel */}
                         <table id="table-to-xls">
                             <tbody>
                                 <tr>

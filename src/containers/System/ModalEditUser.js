@@ -46,7 +46,7 @@ class ModalEditUser extends Component {
                 phonenumber: user.phonenumber,
                 position: user.positionId,
                 role: user.roleId,
-                avatar: user.image,
+                avatar: null,
                 previewImgURL: this.props.previewImgURL
             })
         }
@@ -77,6 +77,7 @@ class ModalEditUser extends Component {
     }
     handleSaveUser = () => {
         let isValid = this.checkValidateInput();
+        console.log('save: ', isValid);
         if (isValid === true) {
             this.props.editUserRedux({
                 id: this.state.id,

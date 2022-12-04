@@ -10,7 +10,7 @@ class About extends Component {
         return (
             <div className="section-share section-about">
                 <div className='section-about-header'>
-                    Truuyền thông nói về Health
+                    <FormattedMessage id="homeheader.internation" />
                 </div>
                 <div className='section-about-content'>
                     <div className='content-left'>

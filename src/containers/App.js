@@ -16,6 +16,7 @@ import DetailDoctor from './Patient/Doctor/DetailDoctor';
 import Doctor from '../routes/Doctor';
 import VerifyEmail from './Patient/VerifyEmail';
 import VerifyChangeLogin from './Patient/VerifyChangeLogin';
+import VerifyCancel from './Patient/VerifyCancel';
 import DetailSpecialty from './Patient/Specialty/DetailSpecialty';
 import DetailClinic from './Patient/Clinic/DetailClinic';
 import SpecialtyAll from './Patient/Specialty/SpecialtyAll';
@@ -60,8 +61,10 @@ class App extends Component {
                                     <Route path={path.DETAIL_DOCTOR} component={DetailDoctor} />
                                     <Route path={path.DETAIL_SPECIALTY} component={DetailSpecialty} />
                                     <Route path={path.DETAIL_CLINIC} component={DetailClinic} />
+
                                     <Route path={path.VERIFY_EMAIL_BOOKING} component={VerifyEmail} />
                                     <Route path={path.VERIFY_EMAIL_CHANGE_LOGIN} component={VerifyChangeLogin} />
+                                    <Route path={path.VERIFY_CANCEL} component={VerifyCancel} />
 
                                     <Route path={path.SPECIALTY_ALL} component={SpecialtyAll} />
                                     <Route path={path.CLINIC_ALL} component={ClinicAll} />

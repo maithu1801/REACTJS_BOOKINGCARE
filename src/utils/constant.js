@@ -12,6 +12,7 @@ export const path = {
     CLINIC_ALL: '/clinic',
     DOCTOR_ALL: '/doctorAll',
     VERIFY_EMAIL_CHANGE_LOGIN: '/verify-change-login',
+    VERIFY_CANCEL: '/verify-cancel',
 };
 
 export const LANGUAGES = {

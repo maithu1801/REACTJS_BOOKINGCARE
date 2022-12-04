@@ -7,6 +7,7 @@ import { getAllClinic } from '../../../services/userService';
 import { withRouter } from 'react-router';
 
 
+
 class MedicalFacility extends Component {
     constructor(props) {
         super(props);
@@ -48,6 +49,7 @@ class MedicalFacility extends Component {
                         <Slider {...this.props.settings}>
                             {dataClinics && dataClinics.length > 0 &&
                                 dataClinics.map((item, index) => {
+
                                     return (
                                         <div className='section-customize clinic-child'
                                             key={index}

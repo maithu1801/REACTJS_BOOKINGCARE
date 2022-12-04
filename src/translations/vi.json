@@ -2,14 +2,13 @@
     "homeheader": {
         "specialty": "Chuyên khoa",
         "searchdoctor": "Tìm theo chuyên khoa",
-        "facility": "Cơ sở y tế",
+        "facility": "Phòng khám",
         "select-room": "Chọn phòng khám",
         "doctor": "Bác sĩ",
         "select-doctor": "Chọn bác sĩ giỏi",
-        "fee": "Gói khám",
-        "check-health": "Khám sức khỏe tổng quát",
         "support": "Hỗ trợ",
-        "welcome": "Xin chào, "
+        "welcome": "Xin chào, ",
+        "internation": "Truyền thông nói gì về Health"
     },
     "banner": {
         "title1": "NỀN TẢNG Y TẾ",
@@ -27,7 +26,7 @@
             "manage-doctor": "Quản lý bác sĩ",
             "manage-admin": "Quản lý Admin",
             "crud": "CRUD user",
-            "crud-redux": "CRUD Redux",
+            "crud-redux": "Quản lý người dùng",
             "clinic": "Phòng Khám",
             "manage-clinic": "Quản lý phòng khám",
             "specialty": "Chuyên khoa",
@@ -60,7 +59,7 @@
         "outstanding-doctor": "Bác sĩ nổi bậc trong tuần",
         "more-infor": "Xem thêm",
         "specialty-poplular": "Chuyên khoa phổ biến",
-        "facility-poplular": "Cơ sở y tế nổi bật"
+        "facility-poplular": "Phòng khám nổi bật"
     },
     "manage-schedule": {
         "title": "Quản lý kế hoạch khám bệnh của bác sĩ",
@@ -84,7 +83,8 @@
         },
         "booking-modal": {
             "title": "Thông tin đặt lịch khám bệnh",
-            "fullName": "Họ và tên",
+            "lastName": "Họ",
+            "firstName": "Tên",
             "phoneNumber": "Số điện thoại",
             "email": "Địa chỉ email",
             "address": "Địa chỉ liên lạc",

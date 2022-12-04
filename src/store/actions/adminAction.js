@@ -173,7 +173,7 @@ export const editUser = (data) => {
                 dispatch(editUserSuccess());
                 dispatch(fetchAllUsersStart());
             } else {
-                toast.error("Update the user error! ");
+                toast.error("Update the user error!123");
                 dispatch(editUsersFailed());
             }
         } catch (e) {
