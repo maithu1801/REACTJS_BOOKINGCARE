@@ -7,9 +7,9 @@ import './UserRedux.scss';
 import 'react-image-lightbox/style.css';
 import ModalUser from '../ModalUser';
 import ModalEditUser from "../ModalEditUser";
-import { editUserService, getAllUsers } from '../../../services/userService';
-
-
+import { editUserService, getAllUsers, saveDetailDoctorService } from '../../../services/userService';
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
+import { toast } from 'react-toastify';
 
 class UserRedux extends Component {
 
@@ -35,6 +35,7 @@ class UserRedux extends Component {
             action: '',
             userEditId: '',
             isOpenModalEditUser: false,
+
         }
     }
     async componentDidMount() {
@@ -205,7 +206,6 @@ class UserRedux extends Component {
         })
     }
     doEditUser = async (user) => {
-        console.log('doEditUser', user);
         try {
             let res = await editUserService(user)
             if (res && res.errCode === 0) {
@@ -228,11 +228,59 @@ class UserRedux extends Component {
             })
         }
     }
+    getAllUsersPatient = async () => {
+        let response = await getAllUsers('PATIENT');
+        console.log('response', response);
+        if (response && response.errCode === 0) {
+            this.setState({
+                arrUsers: response.users
+            })
+        }
+    }
+    getAllUsersDoctor = async () => {
+        let response = await getAllUsers('DOCTOR');
+        console.log('response', response);
+        if (response && response.errCode === 0) {
+            this.setState({
+                arrUsers: response.users
+            })
+        }
+    }
     handleDeleteUser = (user) => {
         this.props.deleteUserRedux(user.id);
     }
+    handleOnChangeInput = (event, id) => {
+        let copyState = { ...this.state };
+        copyState[id] = event.target.value;
+        this.setState({
+            ...copyState
+        })
+    }
+    searchDoctor = async () => {
+        let data = {
+            type: 'search-user',
+            keyWord: this.state.keyWord
+        }
+        let res = await saveDetailDoctorService(data);
+        if (res.err) {
+            toast.error("Đã xảy ra lỗi !");
+        } else if (res.doctor) {
+            this.setState({
+                arrUsers: res.doctor
+            })
+        }
+    }
+    selectAllDoctor = async () => {
+        let response = await getAllUsers('ALL');
+        this.setState({
+            arrUsers: response.users
+        })
+    }
     render() {
-        let arrUsers = this.props.listUsers;
+        // let arrUsers = this.props.listUsers;
+        let arrUsers = this.state.arrUsers;
+
+        console.log('arrUsers', arrUsers);
         return (
             <div className='user-redux-container'>
                 <ModalUser
@@ -261,7 +309,53 @@ class UserRedux extends Component {
                     <button className="btn btn-primary px-3"
                         onClick={() => this.handleAddNewUser()}
                     ><i className="fas fa-plus"></i> <FormattedMessage id="manage-user.add-new-user" /></button>
+
+                    <button className="btn btn-primary px-3"
+                        onClick={() => this.getAllUsersFromReact()}
+                    ><FormattedMessage id="manage-user.list-user" /></button>
+
+                    <button className="btn btn-primary px-3"
+                        onClick={() => this.getAllUsersPatient()}
+                    ><FormattedMessage id="manage-user.list-patient" /></button>
+
+                    <button className="btn btn-primary px-3"
+                        onClick={() => this.getAllUsersDoctor()}
+                    ><FormattedMessage id="manage-user.list-doctor" /></button>
+                    <div className='search-user'>
+                        <input
+                            placeholder="Tìm kiếm tất cả người dùng"
+                            value={this.state.keyWord}
+                            onChange={(event) => this.handleOnChangeInput(event, 'keyWord')}
+                        >
+                        </input>
+
+                        <div className='search-doctor-btn'
+                            onClick={() => this.searchDoctor()}
+                        ><i class="fas fa-search"></i>
+                        </div>
+
+                        <div className='search-doctor-btn'
+                            onClick={() => this.selectAllDoctor()}
+                        ><i class="fas fa-undo"></i>
+                        </div>
+                        <div className="btn-excel">
+                            <ReactHTMLTableToExcel
+                                id="test-table-xls-button"
+                                className="download-table-xls-button"
+                                table="table-excel"
+                                filename="nguoidung"
+                                sheet="tatcanguoidung"
+                                buttonText=""
+                            >
+                            </ReactHTMLTableToExcel>
+                            <div className="excel-icon">
+                                <i className="fas fa-file-excel"></i>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+
                 <div className='user-redux-body'>
                     <table id="TableManageUser">
                         <tbody>
@@ -271,7 +365,58 @@ class UserRedux extends Component {
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Address</th>
+                                <th>Vai trò</th>
                                 <th>Actions</th>
+                            </tr>
+                            {arrUsers && arrUsers.length > 0 &&
+                                arrUsers.map((item, index) => {
+                                    let imageBase64 = '';
+                                    if (item.image) {
+                                        imageBase64 = new Buffer(item.image, 'base64').toString('binary');
+                                    }
+                                    return (
+                                        <tr key={index} >
+                                            {imageBase64 === '' ?
+                                                <td style={{ textAlign: 'center' }}>Bệnh nhân - không có hình ảnh</td> :
+                                                <td style={{ textAlign: 'center' }}><img className='img-avt' src={imageBase64} /></td>
+                                            }
+                                            <td>{item.email}</td>
+                                            <td>{item.firstName}</td>
+                                            <td>{item.lastName}</td>
+                                            <td>{item.address}</td>
+                                            {item.roleId === 'R1' &&
+                                                <td>Quản trị viên</td>
+                                            }
+                                            {item.roleId === 'R2' &&
+                                                <td>Bác sĩ</td>
+                                            }
+                                            {item.roleId === 'R3' &&
+                                                <td>Bệnh nhân</td>
+                                            }
+                                            <td>
+                                                <button
+                                                    onClick={() => this.handleEditUser(item)}
+                                                    className='btn-edit'><i className='fas fa-pencil-alt'></i></button>
+                                                <button
+                                                    onClick={() => this.handleDeleteUser(item)}
+                                                    className="btn-delete"><i className='fas fa-trash'></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    )
+                                })
+                            }
+                        </tbody>
+                    </table>
+                    <table id="table-excel">
+                        <tbody>
+                            <tr>
+                                <th>Ảnh đại diện</th>
+                                <th>Email</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Address</th>
+                                <th>Vai trò</th>
                             </tr>
                             {arrUsers && arrUsers.length > 0 &&
                                 arrUsers.map((item, index) => {
@@ -287,15 +432,15 @@ class UserRedux extends Component {
                                             <td>{item.firstName}</td>
                                             <td>{item.lastName}</td>
                                             <td>{item.address}</td>
-                                            <td>
-                                                <button
-                                                    onClick={() => this.handleEditUser(item)}
-                                                    className='btn-edit'><i className='fas fa-pencil-alt'></i></button>
-                                                <button
-                                                    onClick={() => this.handleDeleteUser(item)}
-                                                    className="btn-delete"><i className='fas fa-trash'></i>
-                                                </button>
-                                            </td>
+                                            {item.roleId === 'R1' &&
+                                                <td>Quản trị viên</td>
+                                            }
+                                            {item.roleId === 'R2' &&
+                                                <td>Bác sĩ</td>
+                                            }
+                                            {item.roleId === 'R3' &&
+                                                <td>Bệnh nhân</td>
+                                            }
                                         </tr>
                                     )
                                 })

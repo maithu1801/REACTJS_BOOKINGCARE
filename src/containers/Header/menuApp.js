@@ -35,6 +35,22 @@ export const adminMenu = [
             },
         ]
     },
+    {//quan ly thuoc
+        name: 'Quản lý thuốc',
+        menus: [
+            {
+                name: 'Kho thuốc', link: '/system/manage-medicine'
+            },
+        ]
+    },
+    {//quan ly lich hen
+        name: 'Quản lý lịch hẹn',
+        menus: [
+            {
+                name: 'Danh sách lịch hẹn', link: '/system/manage-schedule'
+            },
+        ]
+    },
 ];
 
 export const doctorMenu = [

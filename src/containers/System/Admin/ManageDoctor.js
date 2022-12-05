@@ -361,15 +361,15 @@ class ManageDoctor extends Component {
                                 onChange={(event) => this.handleOnChangeInput(event, 'keyWord')}
                             >
                             </input>
+
                             <div className='search-doctor-btn'
                                 onClick={() => this.searchDoctor()}
-                            >
-                                <i class="fas fa-search"></i>
+                            ><i class="fas fa-search"></i>
                             </div>
+
                             <div className='search-doctor-btn'
                                 onClick={() => this.selectAllDoctor()}
-                            >
-                                <i class="fas fa-undo"></i>
+                            ><i class="fas fa-undo"></i>
                             </div>
                             <div className="btn-excel">
                                 <ReactHTMLTableToExcel
@@ -391,6 +391,7 @@ class ManageDoctor extends Component {
                                 <tbody>
                                     <tr>
                                         <th className='title center'>STT</th>
+                                        <th className='title'>Ảnh đại diện</th>
                                         <th className='title'>Last Name</th>
                                         <th className='title'>First Name</th>
                                         <th className='title'>Email</th>
@@ -400,9 +401,15 @@ class ManageDoctor extends Component {
                                     {this.state.allDoctors.length > 0 ?
                                         <React.Fragment>
                                             {this.state.allDoctors.map((item, index) => {
+                                                let imageBase64 = '';
+                                                if (item.image) {
+                                                    imageBase64 = new Buffer(item.image, 'base64').toString('binary');
+                                                }
                                                 return (
                                                     <tr key={index}>
                                                         <td className='center'>{index}</td>
+                                                        <td style={{ textAlign: 'center' }}>
+                                                            <img className='img-doctor' src={imageBase64} /></td>
                                                         <td>{item.lastName}</td>
                                                         <td>{item.firstName}</td>
                                                         <td>{item.email}</td>

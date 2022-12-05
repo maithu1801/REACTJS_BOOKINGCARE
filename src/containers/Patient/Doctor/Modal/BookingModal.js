@@ -31,7 +31,7 @@ class BookingModal extends Component {
             doctorId: '',
             genders: '',
             timeType: '',
-
+            isShowLoading: false,
         }
     }
 
@@ -130,7 +130,9 @@ class BookingModal extends Component {
         let date = new Date(this.state.birthday).getTime();
         let timeString = this.buildTimeBooking(this.props.dataTime);
         let doctorName = this.buildDoctorName(this.props.dataTime);
-
+        this.setState({
+            isShowLoading: true
+        })
         let res = await postPatientBookingAppointment({
             // fullName: this.state.fullName,
             lastName: this.state.lastName,
@@ -148,11 +150,18 @@ class BookingModal extends Component {
             timeString: timeString,
             doctorName: doctorName
         })
+
         if (res && res.errCode === 0) {
+            this.setState({
+                isShowLoading: false
+            })
             toast.success('Booking a new appointment success!')
             this.props.closeBookingClose();
         } else {
-            toast.error('Booking a new appointment error123!')
+            this.setState({
+                isShowLoading: false
+            })
+            toast.error('Booking a new appointment error!')
         }
     }
 
@@ -165,16 +174,16 @@ class BookingModal extends Component {
 
         return (
             <React.Fragment>
-                <LoadingOverlay
-                    active={this.state.isShowLoading}
-                    spinner
-                    text='Loading...'
+                <Modal
+                    isOpen={isOpenModal}
+                    className={'booking-modal-container'}
+                    size='lg'
+                    centered
                 >
-                    <Modal
-                        isOpen={isOpenModal}
-                        className={'booking-modal-container'}
-                        size='lg'
-                        centered
+                    <LoadingOverlay
+                        active={this.state.isShowLoading}
+                        spinner
+                        text='Loading...'
                     >
 
                         <div className='booking-modal-content'>
@@ -274,9 +283,9 @@ class BookingModal extends Component {
                                 ><FormattedMessage id="patient.booking-modal.btnCancel" /></button>
                             </div>
                         </div>
-                    </Modal>
-                </LoadingOverlay>
-            </React.Fragment>
+                    </LoadingOverlay>
+                </Modal>
+            </React.Fragment >
         )
     }
 

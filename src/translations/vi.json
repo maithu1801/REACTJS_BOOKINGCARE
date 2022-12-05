@@ -23,7 +23,7 @@
     "menu": {
         "admin": {
             "manage-user": "Quản lý người dùng",
-            "manage-doctor": "Quản lý bác sĩ",
+            "manage-doctor": "Quản lý thông tin bác sĩ",
             "manage-admin": "Quản lý Admin",
             "crud": "CRUD user",
             "crud-redux": "Quản lý người dùng",
@@ -41,6 +41,9 @@
     },
     "manage-user": {
         "add-new-user": "Thêm mới",
+        "list-patient": "Quản lý bệnh nhân",
+        "list-user": "Quản lý tất cả người dùng",
+        "list-doctor": "Quản lý bác sĩ",
         "manage": "Quản lý người dùng",
         "email": "Email",
         "password": "Mật khẩu",

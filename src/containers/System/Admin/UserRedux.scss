@@ -4,9 +4,88 @@
     .mx-1 {
         margin-left: 40px !important;
 
-        .btn-primary {}
+        .btn-primary {
+            margin: 10px;
+        }
+
+
+
+        .search-user {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            margin-top: 30px;
+
+            input {
+                padding: 10px 20px;
+                outline: none;
+                border-radius: 10px;
+                width: 300px;
+            }
+
+            .search-doctor-btn {
+                padding: 8px 20px;
+                background-color: blue;
+                color: white;
+                font-size: 20px;
+                border-radius: 10px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: green;
+                }
+            }
+
+            .btn-excel {
+                width: 60px;
+                height: 44px;
+                background-color: rgb(1, 195, 198);
+                border: 1px solid rgb(2, 136, 154);
+                position: relative;
+                border-radius: 10px;
+
+                &:hover {
+                    background-color: rgb(4, 135, 155);
+                }
+
+                #test-table-xls-button {
+                    width: 100%;
+                    height: 100%;
+                    background-color: transparent;
+                    border: 0px;
+                    outline: none;
+                    position: absolute;
+                    z-index: 2;
+                    cursor: pointer;
+                }
+
+                .excel-icon {
+                    position: absolute;
+                    z-index: 1;
+                    top: 0px;
+                    left: 0px;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    color: white;
+
+                    i {
+                        font-size: 20px;
+                    }
+                }
+            }
+        }
 
     }
+
+
 
     .user-redux-body {
         #TableManageUser {
@@ -46,6 +125,9 @@
 
         }
 
+        #table-excel {
+            display: none;
+        }
     }
 }
 

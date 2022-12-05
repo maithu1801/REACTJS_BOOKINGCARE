@@ -33,7 +33,6 @@ class ModalEditUser extends Component {
 
     componentDidMount() {
         let user = this.props.currentUser;
-        console.log('nhan user: ', user);
         if (user && !_.isEmpty(user)) {
             this.setState({
                 id: user.id,
@@ -77,7 +76,6 @@ class ModalEditUser extends Component {
     }
     handleSaveUser = () => {
         let isValid = this.checkValidateInput();
-        console.log('save: ', isValid);
         if (isValid === true) {
             this.props.editUserRedux({
                 id: this.state.id,

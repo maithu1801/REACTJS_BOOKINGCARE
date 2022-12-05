@@ -107,55 +107,59 @@
 
 
 .table-list {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 100px;
+    // width: 100%;
+    // display: flex;
+    // flex-direction: row;
+    // justify-content: center;
+    // align-items: center;
+    // padding: 10px 100px;
 
-    table {
-        width: 100%;
+    #table {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 95%;
+        margin: 40px;
 
-        tbody {
-            tr {
-                td {
-                    padding: 10px;
-                    max-width: 400px;
+    }
 
-                    img {
-                        width: 60px;
-                        height: 60px;
-                    }
+    #table td,
+    #table th {
+        padding: 8px;
 
-                    &.title {
-                        font-weight: bold;
-                        font-size: 17px;
-                        text-align: left;
+    }
 
-                        &.center {
-                            text-align: center;
-                        }
-                    }
+    #table tr:nth-child(even) {
+        background-color: #f2f2f2;
 
-                    &.center {
-                        text-align: center;
+    }
 
-                        i {
-                            padding: 0px 10px;
-                            cursor: pointer;
+    #table tr:hover {
+        background-color: rgb(145, 168, 195);
+    }
 
-                            &:hover {
-                                color: red;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+    #table th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #04AA6D;
+        color: white;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .center-tool {
+        width: 200px;
+    }
+
+    .image {
+        width: 300px;
+        height: 200px;
     }
 
     #table-excel {
         display: none;
     }
+
 }

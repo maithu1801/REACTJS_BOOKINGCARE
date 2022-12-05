@@ -151,7 +151,7 @@ class ManageSpecialty extends Component {
                 <div className="ms-title"> Quản lý chuyên khoa</div>
                 {this.state.edit === true &&
                     <div className='close-btn'>
-                        <i class="fas fa-times"
+                        <i className="fas fa-times"
                             onClick={() => {
                                 this.setState({
                                     edit: false
@@ -171,17 +171,17 @@ class ManageSpecialty extends Component {
                             <div className='search-list-btn'
                                 onClick={() => this.searchList()}
                             >
-                                <i class="fas fa-search"></i>
+                                <i className="fas fa-search"></i>
                             </div>
                             <div className='search-list-btn'
                                 onClick={() => this.getList()}
                             >
-                                <i class="fas fa-undo"></i>
+                                <i className="fas fa-undo"></i>
                             </div>
                             <div className='search-list-btn'
                                 onClick={() => this.newInfo()}
                             >
-                                <i class="fas fa-plus"></i>
+                                <i className="fas fa-plus"></i>
                             </div>
                             <div className="btn-excel">
                                 <ReactHTMLTableToExcel
@@ -194,18 +194,18 @@ class ManageSpecialty extends Component {
                                 >
                                 </ReactHTMLTableToExcel>
                                 <div className="excel-icon">
-                                    <i class="fas fa-file-excel"></i>
+                                    <i className="fas fa-file-excel"></i>
                                 </div>
                             </div>
                         </div>
-                        <div className='table-list'>
-                            <table>
+                        <div className='table-list-specialty'>
+                            <table id="table-specialty">
                                 <tbody>
                                     <tr>
-                                        <td className='title center'>STT</td>
-                                        <td className='title'>Ảnh</td>
-                                        <td className='title'>Tên</td>
-                                        <td className='title center'>Tool</td>
+                                        <th className='title center'>STT</th>
+                                        <th className='title'>Ảnh</th>
+                                        <th className='title'>Tên</th>
+                                        <th className='title center'>Tool</th>
                                     </tr>
                                     {this.state.listInfo && this.state.listInfo.length > 0 ?
                                         <React.Fragment>
@@ -215,15 +215,19 @@ class ManageSpecialty extends Component {
                                                 return (
                                                     <tr key={index}>
                                                         <td className='center'>{index}</td>
-                                                        <td ><img src={imageBase64} /></td>
+                                                        <td ><img className='img-sp' src={imageBase64} /></td>
                                                         <td >{item.name}</td>
                                                         <td className='center'>
-                                                            <i class="fas fa-pencil-alt"
-                                                                onClick={() => this.editInfo(item)}
-                                                            ></i>
-                                                            <i class="fas fa-trash-alt"
-                                                                onClick={() => this.deleteInfo(item)}
-                                                            ></i>
+                                                            <button className='btn-edit'>
+                                                                <i className="fas fa-pencil-alt"
+                                                                    onClick={() => this.editInfo(item)}
+                                                                ></i>
+                                                            </button>
+                                                            <button className="btn-delete">
+                                                                <i className="fas fa-trash-alt"
+                                                                    onClick={() => this.deleteInfo(item)}
+                                                                ></i>
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 )

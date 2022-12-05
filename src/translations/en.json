@@ -41,6 +41,9 @@
     },
     "manage-user": {
         "add-new-user": "Add a new user",
+        "list-patient": "Manage patient",
+        "list-user": "Manage user",
+        "list-doctor": "Manage doctor",
         "manage": "Manage user",
         "email": "Email",
         "password": "Password",

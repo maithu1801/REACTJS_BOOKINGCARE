@@ -34,7 +34,6 @@ const getAllDoctors = () => {
     return axios.get(`/api/get-all-doctors`)
 }
 const saveDetailDoctorService = (data) => {
-    console.log('data gui di', data);
     return axios.post('/api/save-infor-doctors', data);
 }
 //////
@@ -118,6 +117,9 @@ const getScheduleManage = (data) => {
 const listManage = (data) => {
     return axios.post(`/api/list-manage`, data);
 }
+const adminManageSchedule = (data) => {
+    return axios.post(`/api/admin-manage-schedule`, data);
+}
 export {
     handleLoginApi,
     getAllUsers,
@@ -152,5 +154,6 @@ export {
     postVerifyChangeLogin,
     editUserPassword,
     getScheduleManage,
-    listManage
+    listManage,
+    adminManageSchedule
 }

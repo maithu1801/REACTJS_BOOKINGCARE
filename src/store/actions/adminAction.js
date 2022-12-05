@@ -165,7 +165,7 @@ export const deleteUsersFailed = () => ({
 export const editUser = (data) => {
     return async (dispatch, getState) => {
         try {
-            console.log("Data gui di: ", data);
+
             let res = await editUserService(data);
             console.log("res nhan ve res: ", res);
             if (res && res.errCode === 0) {
